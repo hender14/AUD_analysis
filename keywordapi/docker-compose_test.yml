@@ -25,6 +25,7 @@ services:
       GCP_ENTITIES_FOLDER: ${GCP_ENTITIES_FOLDER}
       GCP_ANALYSIS_FOLDER: ${GCP_ANALYSIS_FOLDER}
       CORS_ADDRESS: ${CORS_ADDRESS}
+      TESTUSER_ID: ${TESTUSER_ID}
     # env_file:
     # - ./app/docker/test/.env
     command: flask run --host 0.0.0.0 --port 8000

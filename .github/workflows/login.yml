@@ -1,0 +1,64 @@
+name: CI to Docker Hub 
+
+on:
+  push:
+    paths:
+      - 'loginapi/**'
+    # branches: [ '*' ]
+    # branches: [ main ]
+env:
+  IMAGE_NAME: loginAPI
+  TEST_NAME: loginapi
+  TAG: v1.0.0
+  
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      SERVICE_NAME: ${{ secrets.GCP_SERVICE_NAME }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SENDGRID_TEMPLATED_ID: ${{ secrets.SENDGRID_TEMPLATED_ID }}
+      SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+      CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
+      IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_SERVICE_NAME }}:${{ github.sha }}
+      TESTUSER_EMAIL: ${{ secrets.TESTUSER_EMAIL }}
+      TESTUSER_PASSWORD: ${{ secrets.TESTUSER_PASSWORD }}
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: CI/CD
+        run: |
+          docker-compose -f docker-compose.yml build --no-cache
+          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yml ps
+          docker container exec ${{ env.TEST_NAME }} go test
+          docker-compose -f docker-compose.yml down
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ env.GCP_KEYFILE_JSON }}
+
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker --quiet
+
+      - name: Make fail if the previous workflow was failed
+        if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+        run: |
+            cd app/
+            docker build -t ${{ env.IMAGE }} .
+            docker push ${{ env.IMAGE }}
