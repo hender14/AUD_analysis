@@ -2,3 +2,4 @@ service.yaml
 /src/credentials/
 **/.env
 **/__pycache__
+**/.pytest_cache

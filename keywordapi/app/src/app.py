@@ -92,7 +92,7 @@ def detail():
 
 if __name__ == '__main__':
   app.debug = True
-  aport = os.environ['PORT']
-  if not aport:
-    port = 8080
-  app.run(host='0.0.0.0', port=aport)
+  portnum = os.environ['PORT']
+  if not portnum:
+    portnum = 8080
+  app.run(host='0.0.0.0', port=portnum)

@@ -34,9 +34,9 @@ User registration and login information are controlled between FrontEnd-BackEnd:
 
 Please refer to the following API specifications for the details of the created API.
 
-* [loginAPI](https://github.com/hender14/**)
+* [loginAPI](https://github.com/hender14/AUD_analysis/tree/main/loginapi)
 
-* [keywordAPI](https://github.com/hender14/**)
+* [keywordAPI](https://github.com/hender14/AUD_analysis/tree/main/keywordapi)
 
 ## Security
 
@@ -94,7 +94,7 @@ under creating
 
 Please refer to the following API specifications for the details of the created API.
 
-* [loginAPI](https://github.com/hender14/**)
+* [loginAPI](https://github.com/hender14/AUD_analysis/tree/main/loginapi)
 
 ## keywordAPI
 
@@ -112,4 +112,4 @@ Please refer to the following API specifications for the details of the created 
 
 Please refer to the following API specifications for the details of the created API.
 
-* [keywordAPI](https://github.com/hender14/**)
+* [keywordAPI](https://github.com/hender14/AUD_analysis/tree/main/keywordapi)
