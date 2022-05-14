@@ -1,0 +1,11 @@
+version: "3"
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: ./docker/vue3/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./ui:/app
+    command: npm run serve

@@ -1,0 +1,24 @@
+# flask# flask==2.0.1
+flask==2.1.1
+werkzeug==2.0.3
+# --upgrade 
+google-api-python-client==1.12.8
+# google-api-python-client# google-api-python-client==1.12.8
+# --upgrade requests
+requests==2.23.0
+# requests# requests==2.23.0
+lxml==4.2.6
+# lxml# lxml==4.2.6
+numpy==1.19.5
+# numpy# numpy==1.19.5
+google-cloud-speech==2.2.1
+# google-cloud-speech# google-cloud-speech==2.2.1
+grpcio
+google-cloud-language
+google-cloud-storage
+flask-cors
+# os
+python-dotenv
+pytest==5.2.0
+# CI用
+google-auth==1.25.0

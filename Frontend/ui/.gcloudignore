@@ -1,0 +1,10 @@
+# ignore all
+*
+
+# upload list
+!.
+!/dist/**
+!package.json
+!package-lock.json
+
+# gcloud meta list-files-for-uploadにて確認可能

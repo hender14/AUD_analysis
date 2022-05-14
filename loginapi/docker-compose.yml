@@ -1,0 +1,30 @@
+version: '3'
+services:
+  go:
+    build:
+      context: ./app
+      # context: .
+      dockerfile: Dockerfile
+      # dockerfile: ./app/Dockerfile
+    image: loginapi
+    container_name: loginapi
+    environment:
+      GCP_KEYFILE_JSON: ${GCP_KEYFILE_JSON}
+      GCP_PROJECT_ID: ${GCP_PROJECT_ID}
+      CORS_ADDRESS: ${CORS_ADDRESS}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDGRID_TEMPLATED_ID: ${SENDGRID_TEMPLATED_ID}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL}
+    command: go run main.go
+    # command: /bin/sh -c "go run main.go"
+    # command: sh -c "reflex -s -r '\.go$$' "
+    # command: >
+    #   sh -c "reflex -s -r '\.go$$' go run main.go"
+    stdin_open: true
+    tty: true
+    volumes:
+      # - .:/go/src/app
+      - ./app:/go/src/app
+    ports:
+      # - "80:80"
+      - "8080:8080"
