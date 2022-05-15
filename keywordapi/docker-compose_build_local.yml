@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: ./docker/app/Dockerfile
+    image: youtube_analysis_app
+    ports:
+      - "8080:8080"
+    volumes:
+    - ./app/src:/app/src
+    tty: true
+    environment:
+      TZ: Asia/Tokyo
+    env_file:
+    - ./app/docker/test/.env
+    # command: flask run --host 0.0.0.0 --port 8000
