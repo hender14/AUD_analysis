@@ -1,0 +1,9 @@
+service.yaml
+/src/credentials/
+**/.env
+**/__pycache__
+**/.pytest_cache
+/.terraform/
+/terraform/*
+!/terraform/main.tf
+!/terraform/variable.tf
