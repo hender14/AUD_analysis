@@ -2,9 +2,9 @@ name: CI to Docker Hub
 
 on:
   push:
-    # paths:
-    # - 'keywordapi/**'
-    branches: [ '*' ]
+    paths:
+    - 'keywordapi/**'
+    # branches: [ '*' ]
 env:
   TEST_NAME: apptest
 jobs:
