@@ -15,7 +15,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      SERVICE_NAME: ${{ secrets.GCP_KEYWORD_SERVICE_NAME }}
+      GCP_SERVICE_NAME: ${{ secrets.GCP_KEYWORD_SERVICE_NAME }}
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
       GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
