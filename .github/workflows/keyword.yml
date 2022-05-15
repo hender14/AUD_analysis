@@ -7,8 +7,8 @@ on:
     # branches: [ '*' ]
 env:
   TEST_NAME: apptest
-jobs:
 
+jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -25,17 +25,10 @@ jobs:
       GCP_ANALYSIS_FOLDER: ${{ secrets.GCP_ANALYSIS_FOLDER }}
       CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
       IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_KEYWORD_SERVICE_NAME }}:${{ github.sha }}
-      TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
 
     steps:
       - name: Check Out Repo
         uses: actions/checkout@v3
-
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v1 
-      #   with:
-      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: BUILD/DEPLOY
         run: |
@@ -51,6 +44,8 @@ jobs:
           docker-compose -f docker-compose_test.yml run ${{ env.TEST_NAME }} pytest -v test_app.py
           docker-compose -f docker-compose_test.yml down
         working-directory: ./keywordapi
+        env:
+          TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
