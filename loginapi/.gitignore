@@ -1,0 +1,6 @@
+key.json
+.env**
+/.terraform/
+/terraform/*
+!/terraform/main.tf
+!/terraform/variable.tf
