@@ -5,7 +5,6 @@ on:
     # paths:
     # - 'keywordapi/**'
     branches: [ '*' ]
-    # branches: [ main ]
 env:
   TEST_NAME: apptest
 jobs:
