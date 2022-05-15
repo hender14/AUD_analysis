@@ -28,30 +28,3 @@ def test_list_get_status():
     # ans = {'name': ['1650899873639-h4b_serverless_4.json'], 'generation': [1650899887475]}
     assert result.status_code == 200
     # assert ans == result.json
-
-###############
-## TEST END ###
-###############
-
-# def test_clean():
-#   clean()
-#   assert True
-
-
-########################
-## Utility. Not tests ##
-########################
-
-# def clean():
-#   r = get(f'{BASEURL}/keys/')
-#   for key in r.json():
-#     delete(f'{BASEURL}/keys/{key}')
-#   num_keys = len(get(f'{BASEURL}/keys/').json())
-#   assert 0 == num_keys
-
-# def clean_and_add_keys():
-#   clean()
-#   r = put(f'{BASEURL}/keys/apple', data='red')
-#   assert r.status_code == 200
-#   r = put(f'{BASEURL}/keys/banana', data='yellow')
-#   assert r.status_code == 200
