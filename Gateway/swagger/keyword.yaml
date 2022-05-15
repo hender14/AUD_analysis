@@ -1,0 +1,102 @@
+swagger: '2.0'
+info:
+  title: keywordAPI
+  description: keyword API on API Gateway with a Cloud Run backend
+  version: 1.0.1
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: ${Backend_Address}
+
+paths:
+  /list:
+    get:
+      summary: get list infomation
+      operationId: getlist
+      parameters:
+        - in: body
+          name: list
+          schema:
+            $ref: '#/definitions/List'
+      responses:
+        '200':
+          description: A successful response
+    options:
+      summary: cors authentication
+      operationId: authcorsuser
+      responses:
+        '204':
+          description: A successful response
+
+  /detail:
+    get:
+      summary: get detail infomation
+      operationId: detail
+      parameters:
+        - in: body
+          name: detail
+          schema:
+            $ref: '#/definitions/Detail'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+    options:
+      summary: cors authentication
+      operationId: authcorslogout
+      responses:
+        '204':
+          description: A successful response
+
+  /analysis:
+    post:
+      summary: analysis files
+      operationId: analysis
+      parameters:
+        - in: body
+          name: analysis
+          schema:
+            $ref: '#/definitions/Analysis'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+    options:
+      summary: cors authentication
+      operationId: authcorsregister
+      responses:
+        '204':
+          description: A successful response
+
+definitions:
+  List:
+    properties:
+      username:
+        type: string
+    # Both properties are required
+    required:  
+      - username
+
+  Detail:
+    properties:
+      username:
+        type: string
+      filename:
+        type: string
+    required:  
+      - username
+      - filename
+
+  Analysis:
+    properties:
+      username:
+        type: string
+      filename:
+        type: string
+    required:  
+      - username
+      - filename
