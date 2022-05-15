@@ -1,5 +1,0 @@
-.gitignore
-.env
-test/*
-templates/*
-code.txt

@@ -3,20 +3,18 @@ name: CI to Docker Hub
 on:
   push:
     paths:
-      - 'keywordapi/**'
+    - 'keywordapi/**'
     # branches: [ '*' ]
-    # branches: [ main ]
 env:
   TEST_NAME: apptest
-jobs:
 
+jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
     env:
-      SERVICE_NAME: ${{ secrets.GCP_KEYWORD_SERVICE_NAME }}
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
       GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
@@ -26,18 +24,11 @@ jobs:
       GCP_ENTITIES_FOLDER: ${{ secrets.GCP_ENTITIES_FOLDER }}
       GCP_ANALYSIS_FOLDER: ${{ secrets.GCP_ANALYSIS_FOLDER }}
       CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
-      IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_SERVICE_NAME }}:${{ github.sha }}
-      TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
+      IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_KEYWORD_SERVICE_NAME }}:${{ github.sha }}
 
     steps:
       - name: Check Out Repo
         uses: actions/checkout@v3
-
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v1 
-      #   with:
-      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: BUILD/DEPLOY
         run: |
@@ -45,12 +36,16 @@ jobs:
           docker-compose -f docker-compose_build.yml up -d
           docker-compose -f docker-compose_build.yml ps
           docker-compose -f docker-compose_build.yml down
+        working-directory: ./keywordapi
 
       - name: TEST
         run: |
           docker-compose -f docker-compose_test.yml build --no-cache
           docker-compose -f docker-compose_test.yml run ${{ env.TEST_NAME }} pytest -v test_app.py
           docker-compose -f docker-compose_test.yml down
+        working-directory: ./keywordapi
+        env:
+          TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -64,6 +59,6 @@ jobs:
       - name: Make fail if the previous workflow was failed
         if: ${{ github.event.workflow_run.conclusion != 'failure' }}
         run: |
-            cd app/
             docker build -t ${{ env.IMAGE }} -f docker/app/Dockerfile .
             docker push ${{ env.IMAGE }}
+        working-directory: ./keywordapi/app
