@@ -9,8 +9,6 @@ services:
     env_file:
     - ./app/.env
     command: go run main.go
-    # command: /bin/sh -c "go run main.go"
-    # command: sh -c "reflex -s -r '\.go$$' "
     # command: >
     #   sh -c "reflex -s -r '\.go$$' go run main.go"
     stdin_open: true
