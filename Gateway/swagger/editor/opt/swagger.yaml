@@ -1,0 +1,59 @@
+# openapi2-run.yaml
+swagger: '2.0'
+info:
+  title: testAPI
+  description: Sample API on API Gateway with a Cloud Run backend
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: ${Backend_Address}
+paths:
+#   /assets/{asset}:
+#     get:
+#       parameters:
+#         - in: path
+#           name: asset
+#           type: string
+#           required: true
+#           description: Name of the asset.
+#       summary: Assets
+#       operationId: getAsset
+#       responses:
+#         '200':
+#           description: A successful response
+#           schema:
+#             type: string
+  /app/login:
+    post:
+      summary: Cloud Run hello world
+      operationId: hello
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+    options:
+      operationId: corsHelloWorld
+      responses:
+        '204':
+          description: A successful response
+
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    # Both properties are required
+    required:  
+      - email
+      - password
