@@ -45,12 +45,14 @@ jobs:
           docker-compose -f docker-compose_build.yml up -d
           docker-compose -f docker-compose_build.yml ps
           docker-compose -f docker-compose_build.yml down
+        working-directory: ./keywordapi
 
       - name: TEST
         run: |
           docker-compose -f docker-compose_test.yml build --no-cache
           docker-compose -f docker-compose_test.yml run ${{ env.TEST_NAME }} pytest -v test_app.py
           docker-compose -f docker-compose_test.yml down
+        working-directory: ./keywordapi
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -64,6 +66,6 @@ jobs:
       - name: Make fail if the previous workflow was failed
         if: ${{ github.event.workflow_run.conclusion != 'failure' }}
         run: |
-            cd app/
             docker build -t ${{ env.IMAGE }} -f docker/app/Dockerfile .
             docker push ${{ env.IMAGE }}
+        working-directory: ./keywordapi/app
