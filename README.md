@@ -86,8 +86,8 @@ Test/Build/GCPへのUploadは、Github Actionによって自動的に行われ�
 <!-- test/build/uploading registry are automatically done by github action. -->
 
 #### 設定ファイル
-* [loginAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/dep_login.yml)
-* [keywordAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/dep_keyword.yml)
+* [loginAPI](https://github.com/hender14/AUD_analysis/blob/devlop/.github/workflows/dep_login.yml)
+* [keywordAPI](https://github.com/hender14/AUD_analysis/blob/devlop/.github/workflows/dep_keyword.yml)
 
 ** テストパタンは作成途中のため、現状十分なカバレッジを持っていません。
 ### Deploy
