@@ -3,8 +3,8 @@ name: CI to GCP on loginapi
 on:
   push:
     paths:
-      - 'loginapi/**'
-    # branches: [ '*' ]
+    - 'loginapi/**'
+    branches: [ 'feature/**' ]
 env:
   TEST_NAME: loginapi
 
@@ -21,7 +21,6 @@ jobs:
       SENDGRID_TEMPLATED_ID: ${{ secrets.SENDGRID_TEMPLATED_ID }}
       SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
       CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
-      IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_LOGIN_SERVICE_NAME }}:${{ github.sha }}
 
     steps:
       - name: Check Out Repo
@@ -38,19 +37,3 @@ jobs:
         env:
           TESTUSER_EMAIL: ${{ secrets.TESTUSER_EMAIL }}
           TESTUSER_PASSWORD: ${{ secrets.TESTUSER_PASSWORD }}
-
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: ${{ env.GCP_KEYFILE_JSON }}
-
-      - name: Configure docker to use the gcloud cli
-        run: gcloud auth configure-docker --quiet
-
-      - name: Make fail if the previous workflow was failed
-        if: ${{ github.event.workflow_run.conclusion != 'failure' }}
-        run: |
-            docker build -t ${{ env.IMAGE }} .
-            docker push ${{ env.IMAGE }}
-        working-directory: ./loginapi/app

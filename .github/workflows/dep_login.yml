@@ -1,0 +1,57 @@
+name: CI to GCP on loginapi
+
+on:
+  push:
+    paths:
+    - 'loginapi/**'
+    branches: [ 'deploy' ]
+env:
+  TEST_NAME: loginapi
+  TAG: 1.0.2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SENDGRID_TEMPLATED_ID: ${{ secrets.SENDGRID_TEMPLATED_ID }}
+      SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+      CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
+      IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_LOGIN_SERVICE_NAME }}:${{ github.sha }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: CI/CD
+        run: |
+          docker-compose -f docker-compose.yml build --no-cache
+          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yml ps
+          docker container exec ${{ env.TEST_NAME }} go test
+          docker-compose -f docker-compose.yml down
+        working-directory: ./loginapi
+        env:
+          TESTUSER_EMAIL: ${{ secrets.TESTUSER_EMAIL }}
+          TESTUSER_PASSWORD: ${{ secrets.TESTUSER_PASSWORD }}
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ env.GCP_KEYFILE_JSON }}
+
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker --quiet
+
+      - name: Make fail if the previous workflow was failed
+        if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+        run: |
+            docker build -t ${{ env.IMAGE }} .
+            docker push ${{ env.IMAGE }}
+        working-directory: ./loginapi/app

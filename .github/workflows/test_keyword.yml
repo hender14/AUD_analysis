@@ -1,0 +1,47 @@
+name: CI to GCP on keywordapi
+
+on:
+  push:
+    paths:
+    - 'keywordapi/**'
+    branches: [ 'feature/**' ]
+env:
+  TEST_NAME: apptest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
+      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
+      GCP_STORAGE_BUCKET: ${{ secrets.GCP_STORAGE_BUCKET }}
+      GCP_TRANSLATE_FOLDER: ${{ secrets.GCP_TRANSLATE_FOLDER }}
+      GCP_COMPLEHEND_FOLDER: ${{ secrets.GCP_COMPLEHEND_FOLDER }}
+      GCP_ENTITIES_FOLDER: ${{ secrets.GCP_ENTITIES_FOLDER }}
+      GCP_ANALYSIS_FOLDER: ${{ secrets.GCP_ANALYSIS_FOLDER }}
+      CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: BUILD/DEPLOY
+        run: |
+          docker-compose -f docker-compose_build.yml build --no-cache
+          docker-compose -f docker-compose_build.yml up -d
+          docker-compose -f docker-compose_build.yml ps
+          docker-compose -f docker-compose_build.yml down
+        working-directory: ./keywordapi
+
+      - name: TEST
+        run: |
+          docker-compose -f docker-compose_test.yml build --no-cache
+          docker-compose -f docker-compose_test.yml run ${{ env.TEST_NAME }} pytest -v test_app.py
+          docker-compose -f docker-compose_test.yml down
+        working-directory: ./keywordapi
+        env:
+          TESTUSER_ID: ${{ secrets.TESTUSER_ID }}

@@ -2,7 +2,7 @@
 
 
 ## Service abstract
-動画・音声ファイルのｷーﾜーﾄﾞを算出するサービスにです。必要な操作は非常に容易で、動画をアップロードするのみ。動画をアップロードして頂ければ、本アプリケーションが内容を解析して動画に関するアドバイスを提供します。
+動画・音声ファイルのｷーﾜーﾄﾞを算出するサービスです。必要な操作は非常に容易で、動画をアップロードするのみ。動画をアップロードして頂ければ、本アプリケーションが内容を解析して動画に関するアドバイスを提供します。
 
 ![](static/sample.jpeg)
 
@@ -14,7 +14,7 @@
 
 動画配信サービスは、スマートフォンやインタｰネットインターネットの普及によって年々利用者が増えています。その中でもYoutubeは基本使用料が無料であることもあり、突出して人気があります。​
 
-ただし、動画配信者目線で見た場合インフルエンサーや動画が飽和しており再生数を伸ばすことが困難となってきています。​
+ただし、動画配信者目線で見た場合動画が飽和しており再生数を伸ばすことが困難となってきています。​
 
 その中で、動画の再生数を増加させるためにはユーザの検索に引っかかる必要があり、そのためにも検索上位を狙いたいｷーﾜーﾄﾞを決定する事が重要となっていますが、このｷーﾜーﾄﾞを算出する手法が確立されていない事が現状になります。そのため、ｷｰﾜｰﾄﾞをデータ分析によって算出する​事を目的として、本サービスを作成しました。
 
@@ -86,14 +86,21 @@ Test/Build/GCPへのUploadは、Github Actionによって自動的に行われ�
 <!-- test/build/uploading registry are automatically done by github action. -->
 
 #### 設定ファイル
-* [loginAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/login.yml)
-* [keywordAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/keyword.yml)
+* [loginAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/dep_login.yml)
+* [keywordAPI](https://github.com/hender14/AUD_analysis/tree/main/.github/workflows/dep_keyword.yml)
 
 ** テストパタンは作成途中のため、現状十分なカバレッジを持っていません。
 ### Deploy
 
 Deployはterraformを使用して行われます。Deploy設定は必要最低限の機能で構成しています。
 <!-- deploy is done by terraform. -->
+
+* Frontend
+```bash
+cd Frontend/ui/
+gcloud config set project ${PROJECT}
+gcloud app deploy
+```
 
 * loginapi
 ```bash

@@ -4,9 +4,10 @@ on:
   push:
     paths:
     - 'keywordapi/**'
-    # branches: [ '*' ]
+    branches: [ 'deploy' ]
 env:
   TEST_NAME: apptest
+  TAG: 1.0.2
 
 jobs:
   build:
