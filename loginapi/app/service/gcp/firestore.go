@@ -96,12 +96,30 @@ func Fsquery (param *model.Fsqparam ) (qritem []model.User, err error) {
   return qritem, err
 }
 
+func Fsquery_rst (param *model.Fsqparam ) (qritem []model.PasswordReset, err error) {
+  query := fsc.Fsc.Client.Collection(param.Collection).Where(param.Key, param.Condition, param.Value)
+  qritem = make([]model.PasswordReset, 0)
+  if err := fsc.Fsc.NewRequest().QueryEntities(fsc.Ctx, query, &qritem)(); err != nil {
+      fmt.Printf("user was not found by search: %s\n", err)
+  }
+  return qritem, err
+}
+
 // Delete the entity
 func Fsdelete (user *model.User) (err error) {
   fsc.Fsc.NewRequest().DeleteEntities(fsc.Ctx, user)()
   dlitem := &model.User{ID:user.ID}
-  if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, dlitem)(); err != nil {
-      fmt.Println("Delete has not completed")
+  if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, dlitem)(); err == nil {
+    fmt.Printf("Delete has not completed: %s\n", user.ID)
+  }
+  return err
+}
+
+func Fsdelete_rst (user *model.PasswordReset) (err error) {
+  fsc.Fsc.NewRequest().DeleteEntities(fsc.Ctx, user)()
+  dlitem := &model.PasswordReset{ID:user.ID}
+  if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, dlitem)(); err == nil {
+    fmt.Printf("Delete has not completed: %s\n", user.ID)
   }
   return err
 }

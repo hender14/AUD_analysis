@@ -31,7 +31,7 @@ jobs:
           docker-compose -f docker-compose.yml build --no-cache
           docker-compose -f docker-compose.yml up -d
           docker-compose -f docker-compose.yml ps
-          docker container exec ${{ env.TEST_NAME }} go test
+          docker container exec ${{ env.TEST_NAME }} go test -v
           docker-compose -f docker-compose.yml down
         working-directory: ./loginapi
         env:

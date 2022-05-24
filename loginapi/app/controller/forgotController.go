@@ -15,7 +15,7 @@ import (
 func Forgot(ctx *gin.Context) {
 	var data map[string]string
 	// parse request data
-	if err := ctx.Bind(&data); err != nil {
+	if err := ctx.BindJSON(&data); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for input data"})
 		return
 	}
@@ -57,7 +57,7 @@ func Forgot(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H {"message": "SUCCESS"})
+	ctx.JSON(http.StatusOK, gin.H {"token": token,})
 }
 
 // ﾗﾝﾀﾞﾑ文字列を返す関数
@@ -73,7 +73,7 @@ func RandStringRunes(n int) string {
 func Reset(ctx *gin.Context) {
 	var data map[string]string
 	// parse request data
-	if err := ctx.Bind(&data); err != nil {
+	if err := ctx.BindJSON(&data); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Tt has problem for input data"})
 		return
 	}
@@ -85,19 +85,19 @@ func Reset(ctx *gin.Context) {
 	// get token data from JWT Token
 	token := data["token"]
 	// query the entity
-	qrfield, err := gcp.Fsquery(&model.Fsqparam{Collection: "PasswordReset", Key: "token", Condition: "==", Value: token})
+	qrfield_rst, err := gcp.Fsquery_rst(&model.Fsqparam{Collection: "PasswordReset", Key: "token", Condition: "==", Value: token})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "query has not completed"})
 		return
 	}
-	if len(qrfield) == 0 || len(qrfield) == 2{
+	if len(qrfield_rst) == 0 || len(qrfield_rst) == 2{
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "reset had not registered"})
 		return
 	}
 
-	email := qrfield[0].Email
+	email := qrfield_rst[0].Email
 	// query the entity
-	qrfield, err = gcp.Fsquery(&model.Fsqparam{Collection: "User", Key: "email", Condition: "==", Value: email})
+	qrfield, err := gcp.Fsquery(&model.Fsqparam{Collection: "User", Key: "email", Condition: "==", Value: email})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "query has not completed"})
 		return
@@ -115,6 +115,13 @@ func Reset(ctx *gin.Context) {
 	_, err = gcp.Fsupdate(&user)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "update has not completed"})
+		return
+	}
+
+	user_rst := qrfield_rst[0]
+	err = gcp.Fsdelete_rst( &user_rst )
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "query has not completed"})
 		return
 	}
 
