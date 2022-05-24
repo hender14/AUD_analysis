@@ -1,4 +1,4 @@
-name: CI to GCP on loginapi
+name: Test to GCP on loginapi
 
 on:
   push:
@@ -35,5 +35,8 @@ jobs:
           docker-compose -f docker-compose.yml down
         working-directory: ./loginapi
         env:
+          TESTUSER_FIRSTNAME: ${{ secrets.TESTUSER_FIRSTNAME }}
+          TESTUSER_LASTNAME: ${{ secrets.TESTUSER_LASTNAME }}
           TESTUSER_EMAIL: ${{ secrets.TESTUSER_EMAIL }}
           TESTUSER_PASSWORD: ${{ secrets.TESTUSER_PASSWORD }}
+          TESTUSER_PASSWORD_CONFIRM: ${{ secrets.TESTUSER_PASSWORD_CONFIRM }}

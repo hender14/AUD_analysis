@@ -41,6 +41,7 @@ func setupRouter() *gin.Engine {
   // reset user info
   router.POST("/app/forgot", controller.Forgot)
   router.POST("/app/reset", controller.Reset)
+  // delete user info
   router.GET("/app/delete", controller.Delete)
   
 	return router

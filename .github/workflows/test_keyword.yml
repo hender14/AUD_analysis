@@ -1,4 +1,4 @@
-name: CI to GCP on keywordapi
+name: Test to GCP on keywordapi
 
 on:
   push:
