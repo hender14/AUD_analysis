@@ -15,14 +15,6 @@ CORS(app)
 load_dotenv()
 gcstorage.make_keyfile()
 
-@app.route('/', methods=["GET"])
-def index():
-#   return jsonify({
-#     "message": "テスト!!"
-#   })
-  return "root"
-  # return jsonify({'message': 'parameter is not enough'}), 200
-
 #CORS設定用
 @app.after_request
 def after_request(response):
@@ -47,6 +39,7 @@ def analysis():
     # else:
     #   return jsonify({'message': 'OK'}), 200
 
+  filename = username + '/' + filename
   sepa = filename.split(".")
   filenameo = sepa[len(sepa)-2]
 
@@ -89,6 +82,21 @@ def detail():
   print(filename)
   contents = gcstorage.download_blob_into_memory(bucket_name, filename)
   return contents
+
+# youtube解析用APIのオブジェクト削除
+@app.route('/delete', methods=["GET"])
+def delete():
+  if request.method == "GET":
+    username = request.args.get('username', default="", type=str)
+    filename = request.args.get('filename', default="", type=str)
+    if not (username and filename):
+      return jsonify({'message': 'parameter is not enough'}), 400
+
+  bucket_name = os.environ['GCP_STORAGE_BUCKET']
+  foldername = os.environ['GCP_ANALYSIS_FOLDER']
+  filename = foldername + "/" + username + '/' + filename
+  gcstorage.delete_blob(bucket_name, filename)
+  return  jsonify({'message': 'delete is completed'}), 200
 
 if __name__ == '__main__':
   app.debug = True

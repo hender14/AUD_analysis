@@ -46,7 +46,7 @@ def download_blob_into_memory(bucketname, filename):
 
   blob = bucket.blob( filename )
   # blob = bucket.blob( username + "/" + filename + ".json")
-  contents = blob.download_as_string()
+  contents = blob.download_as_bytes()
   # print(type(contents))
   print(
       "Downloaded storage object {} from bucket {} as the following string: {}.".format(
@@ -86,11 +86,14 @@ def list_blobs_with_prefix(bucket_name, prefix, delimiter=None):
 
   return json
 
-# def json_translate():
-  # sa_key = json.dumps(key)
-  # sa_key.encode("utf-8").decode("unicode-escape").strip('"\\')
-  # sa_key =  os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-  # json_open = open(sa_key, 'rb')
-  # json_byte = json_open.read()
-  # data_encode_bytes = base64.b64encode(json_byte)
-  # return
+def delete_blob(bucket_name, blob_name):
+  """Deletes a blob from the bucket."""
+  client = storage.Client.from_service_account_json(sa_key)
+
+  bucket = client.bucket(bucket_name)
+  blob = bucket.blob(blob_name)
+  blob.delete()
+
+  print("Blob {} deleted.".format(blob_name))
+  
+  return

@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 
@@ -56,7 +55,6 @@ func Sendmail(config model.Mails, url string) (response *rest.Response, err erro
 	// GoのｺｰﾄﾞをJSON化
 	data, err := json.Marshal(mail)
 
-	log.Println(string(data))
 	if err != nil {
 		log.Println(err)
 	}
@@ -68,9 +66,9 @@ func Sendmail(config model.Mails, url string) (response *rest.Response, err erro
 	if err != nil {
 			log.Println(err)
 	} else {
-			fmt.Println(response.StatusCode)
-			fmt.Println(response.Body)
-			fmt.Println(response.Headers)
+			// fmt.Println(response.StatusCode)
+			// fmt.Println(response.Body)
+			// fmt.Println(response.Headers)
 	}
 
 	return response, err

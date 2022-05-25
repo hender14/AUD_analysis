@@ -1,4 +1,4 @@
-name: CI to GCP on keywordapi
+name: Test to GCP on keywordapi
 
 on:
   push:
@@ -45,3 +45,5 @@ jobs:
         working-directory: ./keywordapi
         env:
           TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
+          TESTUSER_TRANSLATE_FILENAME: ${{ secrets.TESTUSER_TRANSLATE_FILENAME }}
+          TESTUSER_ANALYSIS_FILENAME: ${{ secrets.TESTUSER_ANALYSIS_FILENAME }}

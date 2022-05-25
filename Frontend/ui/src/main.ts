@@ -30,8 +30,8 @@ export async function jsondec(data: Promise<ArrayBuffer>) {
 export async function uploadfile(file: any, username: string, filename: string) {
   const bucketName = process.env.VUE_APP_BUCKETFORDER
   const time = new Date().getTime().toString();
-  const fileName = username+'/'+time+'-'+filename
-  const pathName = 'gs://'+ firebaseConfig.storageBucket + '/' + bucketName+'/'+ fileName
+  const fileName = time+'-'+filename
+  const pathName = 'gs://'+ firebaseConfig.storageBucket + '/' + bucketName+'/'+ username+'/'+ fileName
 
   // Initialize Firebase
   const firebaseApp = initializeApp(firebaseConfig);

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -25,20 +24,11 @@ func Test(ctx *gin.Context) {
 		})
 }
 
-func Test2(ctx *gin.Context) {
-	fmt.Println("test")
-	// var data map[string]string
-  // ctx.AbortWithStatus(http.StatusNoContent)
-		ctx.JSON(200, gin.H{
-			"msg": "hello world",
-		})
-}
-
 // user register
 func Sign(ctx *gin.Context) {
 	var data map[string]string
 	// parse request data
-		if err := ctx.Bind(&data); err != nil {
+		if err := ctx.BindJSON(&data); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for input data"})
 		return
 	}
@@ -76,6 +66,34 @@ func Sign(ctx *gin.Context) {
 	// user register
 	gcp.Fscreate(&user)
 
+	ctx.JSON(http.StatusOK, user)
+}
+
+func Delete(ctx *gin.Context) {
+	var data map[string]string
+	// if err := ctx.Bind(&data); err != nil {
+	if err := ctx.BindJSON(&data); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for input data"})
+		return
+	}
+
+	email := data["email"]
+	// query the entity
+	qrfield, err := gcp.Fsquery(&model.Fsqparam{Collection: "User", Key: "email", Condition: "==", Value: email})
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "query has not completed"})
+		return
+	}
+	user := qrfield[0]
+	err = gcp.Fsdelete( &user )
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Delete has not completed"})
+		return
+	}
+
+	// samesiteをnonemodeにする
+	ctx.SetSameSite(http.SameSiteNoneMode)
+	ctx.SetCookie ("jwt",	"", 3600/* time.Now().Add(time.Hour * 24) */, "/app", os.Getenv("CORS_ADDRESS"), true ,false,)
 	ctx.JSON(http.StatusOK, user)
 }
 
@@ -139,7 +157,8 @@ func Logout(ctx *gin.Context) {
 	ctx.SetCookie ("jwt",	"", 3600/* time.Now().Add(time.Hour * 24) */, "/app", os.Getenv("CORS_ADDRESS"), true ,false,
 )
 
-	ctx.JSON(http.StatusOK, gin.H {"message": "success",})
+	cookie, _ := ctx.Cookie("jwt") // info when login
+	ctx.JSON(http.StatusOK, gin.H {"jwt": cookie })
 }
 
 	// get user info *add coockie info

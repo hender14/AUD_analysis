@@ -30,9 +30,6 @@ func setupRouter() *gin.Engine {
   //CORSはﾙｰﾃｨﾝｸﾞの前に宣言する
   router.Use(middleware.CORS())
 
-  router.GET("/", controller.Test)
-  router.POST("/", controller.Test2)
-
   // user registration
   router.POST("/app/register", controller.Sign)
   // login
@@ -44,6 +41,8 @@ func setupRouter() *gin.Engine {
   // reset user info
   router.POST("/app/forgot", controller.Forgot)
   router.POST("/app/reset", controller.Reset)
+  // delete user info
+  router.GET("/app/delete", controller.Delete)
   
 	return router
 }
