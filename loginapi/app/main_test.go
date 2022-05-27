@@ -42,6 +42,13 @@ type TResetuser struct {
 	SPassword_confirm string `json:"password_confirm"`
 }
 
+type Cntmail struct {
+	ID string
+	Title string `json:"title"`
+	Content string `json:"content"`
+	Email string `json:"email"`
+}
+
 // global変数
 var jwttoken LJwttoken
 var token RToken
@@ -165,5 +172,20 @@ func TestDelete(t *testing.T) {
 	assert.NotEqual(t, nil, w.Body.String())
 	// err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
 	// assert.Equal(t, nil, err)
+	// println(w.Body.String())
+}
+
+func TestContact(t *testing.T) {
+	router := setupRouter()
+	input := Cntmail{os.Getenv("TESTMAIL_ID") ,os.Getenv("TESTMAIL_TITLE") , os.Getenv("TESTMAIL_CONTENT"), os.Getenv("TESTMAIL_EMAIL")}
+	input_json, _ := json.Marshal(input)
+  body := strings.NewReader(string(input_json))
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/contact", body)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
 	// println(w.Body.String())
 }

@@ -41,16 +41,14 @@ func Forgot(ctx *gin.Context) {
 	// save for DB
 	gcp.Fscreate_rst(&passwordReset)
 
+	// mail config
+	mailconfig := Resetmail(token, email)
+	// var param map[string]string
+	param := map[string]string{"reseturl": os.Getenv("CORS_ADDRESS") + "/reset/" + token, "email": os.Getenv("SENDGRID_FROM_EMAIL")}
+	// param["Reseturl"] = os.Getenv("CORS_ADDRESS") + "/reset/" + token
+	// fmt.Printf("%+v\n", param)
 	// send Sendgrid mail by Web API
-	baseurl := os.Getenv("CORS_ADDRESS")
-	url := baseurl + "/reset/" + token
-	mailconfig := model.Mails{
-		From: model.Sendaddress{ Express: "AUD Support Team", Address: os.Getenv("SENDGRID_FROM_EMAIL")},
-		To: model.Sendaddress{ Express: "User", Address: data["email"]},
-		Subject: "Password Reset",
-		Text: model.Content{ Plantext: "Click here to reset password!", Htmltext: url },
-  }
-	_, err = service.Sendmail(mailconfig, url)
+	_, err = service.Sendmail(mailconfig, param, "reset")
 	if err != nil {
 		// errmessage := "firebase auth has problem: " + err
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err })
@@ -58,6 +56,17 @@ func Forgot(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H {"token": token,})
+}
+
+func Resetmail(token string, email string) ( model.Mails ) {
+
+	mailconfig := model.Mails{
+		From: model.Sendaddress{ Express: "AUD Support Team", Address: os.Getenv("SENDGRID_FROM_EMAIL")},
+		To: model.Sendaddress{ Express: "User", Address: email},
+		Subject: "Password Reset",
+		// Text: model.Content{ Plantext: "Click here to reset password!", Htmltext: url },
+  }
+	return mailconfig
 }
 
 // ﾗﾝﾀﾞﾑ文字列を返す関数
