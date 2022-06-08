@@ -38,7 +38,7 @@ func NoSqlconnect() (err error) {
 }
 
 // Create the entity
-func Fscreate (user *model.User) (err error) {
+func Fscreate (user *model.SignUser) (err error) {
   if err := fsc.Fsc.NewRequest().CreateEntities(fsc.Ctx, user)(); err != nil {
     fmt.Printf("create entity has problem: %s\n", err)
     return err
@@ -65,33 +65,37 @@ func Fscreate_rst (user *model.PasswordReset) (err error) {
 }
 
 // Read the entity by ID
-func Fsread (user *model.User) (rditem *model.User, err error) {
-  rditem = &model.User{ID:user.ID}
+func Fsread (id string) (rditem *model.SignUser, err error) {
+  rditem = &model.SignUser{ID: id}
   if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, rditem)(); err != nil {
+    fmt.Printf("read result: %s\n", rditem)
     fmt.Printf("user was not found by search: %s\n", err)
+    return nil, err
   }
   return rditem, err
 }
 
 // Update the entity
-func Fsupdate (user *model.User) (upitem *model.User, err error) {
+func Fsupdate (user *model.SignUser) (err error) {
   fsc.Fsc.NewRequest().UpdateEntities(fsc.Ctx, user)()
-  upitem = &model.User{ID:user.ID}
+  upitem := &model.SignUser{ID: user.ID}
   if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, upitem)(); err != nil {
+    fmt.Printf("read result: %s\n", upitem)
     fmt.Printf("user was not found by search: %s\n", err)
-}
+  }
 //   if upitem.ID != user.ID || upitem.Make != user.Make {
 //     fmt.Printf("update not reflected : upitem: %v user: %v\n", upitem, user)
 // }
-  return upitem, err
+  return err
 }
 
 // query the entity
-func Fsquery (param *model.Fsqparam ) (qritem []model.User, err error) {
+func Fsquery (param *model.Fsqparam ) (qritem []model.SignUser, err error) {
   query := fsc.Fsc.Client.Collection(param.Collection).Where(param.Key, param.Condition, param.Value)
-  qritem = make([]model.User, 0)
+  qritem = make([]model.SignUser, 0)
   if err := fsc.Fsc.NewRequest().QueryEntities(fsc.Ctx, query, &qritem)(); err != nil {
-      fmt.Printf("user was not found by search: %s\n", err)
+    fmt.Printf("query result: %s/n", qritem)
+		fmt.Printf("query err result: %s/n", err)
   }
   return qritem, err
 }
@@ -100,15 +104,15 @@ func Fsquery_rst (param *model.Fsqparam ) (qritem []model.PasswordReset, err err
   query := fsc.Fsc.Client.Collection(param.Collection).Where(param.Key, param.Condition, param.Value)
   qritem = make([]model.PasswordReset, 0)
   if err := fsc.Fsc.NewRequest().QueryEntities(fsc.Ctx, query, &qritem)(); err != nil {
-      fmt.Printf("user was not found by search: %s\n", err)
+    fmt.Printf("user was not found by search: %s\n", err)
   }
   return qritem, err
 }
 
 // Delete the entity
-func Fsdelete (user *model.User) (err error) {
+func Fsdelete (user *model.SignUser) (err error) {
   fsc.Fsc.NewRequest().DeleteEntities(fsc.Ctx, user)()
-  dlitem := &model.User{ID:user.ID}
+  dlitem := &model.SignUser{ID: user.ID}
   if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, dlitem)(); err == nil {
     fmt.Printf("Delete has not completed: %s\n", user.ID)
   }
