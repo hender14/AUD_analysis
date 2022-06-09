@@ -10,18 +10,18 @@
       </section>
     </section>
   </div>
-  <footer class="bg-secondary text-center text-light p-5 mt-5">
-    <small>Copyright©2022 conforto All Rights Reserved.</small>
-  </footer>
+  <Footer />
 </template>
 
 <script>
 import Nav from "@/components/Nav"
 import Sidevar from "@/components/Sidevar"
+import Footer from "@/components/Footer"
 export default {
   components: {
     Nav,
-    Sidevar
+    Sidevar,
+    Footer
   }
 }
 </script>

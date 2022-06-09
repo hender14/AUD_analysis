@@ -5,8 +5,9 @@ import Login from '../pages/Login.vue'
 import Logout from '../pages/Logout.vue'
 import Forgot from '../pages/Forgot.vue'
 import Reset from '../pages/Reset.vue'
-import Teams from '../rule/teams.vue'
-import Privacy from '../rule/privacy.vue'
+import Teams from '../rule/Teams.vue'
+import Privacy from '../rule/Privacy.vue'
+import Contact from '../rule/Contact.vue'
 import User from '../analysis/User.vue'
 import Input from '../analysis/Input.vue'
 import Result from '../analysis/Result.vue'
@@ -21,6 +22,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/reset/:token', component: Reset},
   { path: '/rule/teams', component: Teams},
   { path: '/rule/privacy', component: Privacy},
+  { path: '/rule/contact', component: Contact},
   { path: '/user', component: User},
   { path: '/input', component: Input, name: "Input", props: true},
   { path: '/result', component: Result, name: "Result", props: true},

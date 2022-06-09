@@ -64,7 +64,7 @@ export default {
     onMounted(async () => {
       try {
         const { data } = await axios.get( userURL + 'user')
-        user = data.ID
+        user = data.id
         // actionsに設定したパラメータ名を設定
         await store.dispatch('setAuth', true)
       } catch(e) {

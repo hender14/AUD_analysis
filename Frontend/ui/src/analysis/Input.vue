@@ -8,8 +8,8 @@
   </header>
   <form @submit.prevent="upload">
     <div>
-      <label for="file">アップロードするファイルを選択してください</label>
-      <input type="file" id="file" name="file" required @change="validate_uploads">
+      <label class="pb-2 mb-3 d- flex align-items-center" for="file">アップロードするファイルを選択してください</label><br>
+      <input class="pb-2 mb-3 d- flex align-items-center" type="file" id="file" name="file" required @change="validate_uploads"><br>
       <input type='submit' name='upload_btn' value='upload'>
     </div>
   </form>
@@ -110,7 +110,7 @@ export default {
     onMounted(async () => {
       try {
         const { data } = await axios.get( userURL+ 'user')
-        user = data.ID
+        user = data.id
         // actionsに設定したパラメータ名を設定
         await store.dispatch('setAuth', true)
       } catch(e) {
