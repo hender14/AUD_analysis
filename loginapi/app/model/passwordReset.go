@@ -3,8 +3,8 @@ package model
 import "time"
 
 type PasswordReset struct {
-	ID    string
-	Email string
-	Token string
-	Year  time.Time
+	ID    string `json:"id"`
+	Email string `json:"email"`
+	Token string `json:"token"`
+	Year  time.Time `json:"year"`
 }

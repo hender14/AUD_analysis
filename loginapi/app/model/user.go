@@ -15,5 +15,5 @@ type User struct {
 type SignUser struct {
 	ID string `json:"id"`
 	User
-	Year time.Time
+	Year time.Time `json:"year"`
 }
