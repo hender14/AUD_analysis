@@ -4,33 +4,27 @@ type Mails struct {
 	From    Sendaddress
 	To      Sendaddress
 	Subject string
-	Text    Content
+	// Text    Content
 }
 
 type Sendaddress struct {
-	Express    string
-	Address     string
-}
-
-type Content struct {
-	Plantext    string
-	Htmltext    string
+	Express string
+	Address string
 }
 
 // requert.Bodyに格納するJSONの元となるメールを表す構造体
-type Mail struct {
-	Subject          string             `json:"subject"`
-	Personalizations []Personalizations `json:"personalizations"`
-	From             MailUser           `json:"from"`
-	TemplateId       string             `json:"template_id"`
-	// Content          []Contents         `json:"content"`
+type RstMail struct {
+	Subject          string        `json:"subject"`
+	Personalizations []RstPersonal `json:"personalizations"`
+	From             MailUser      `json:"from"`
+	TemplateId       string        `json:"template_id"`
 }
 
 // 封筒のようなもの
 // メールのメタデータを表す構造体
-type Personalizations struct {
-	To []MailUser `json:"to"`
-	Parameter TemplatePara `json:"dynamic_template_data"`
+type RstPersonal struct {
+	To        []MailUser  `json:"to"`
+	Parameter RstmailPara `json:"dynamic_template_data"`
 }
 
 // メールのユーザーを表す構造体
@@ -40,13 +34,28 @@ type MailUser struct {
 }
 
 // メールの変数情報
-type TemplatePara struct {
-	Reseturl  string `json:"reseturl"`
-	Email string `json:"email"`
+type RstmailPara struct {
+	Reseturl string `json:"reseturl"`
+	Email    string `json:"email"`
 }
 
-// メールの中身を表す構造体
-// type Contents struct {
-// 	Type  string `json:"type"`
-// 	Value string `json:"value"`
-// }
+// requert.Bodyに格納するJSONの元となるメールを表す構造体
+type CntMail struct {
+	Subject          string        `json:"subject"`
+	Personalizations []CntPersonal `json:"personalizations"`
+	From             MailUser      `json:"from"`
+	TemplateId       string        `json:"template_id"`
+}
+
+// メールのメタデータを表す構造体
+type CntPersonal struct {
+	To        []MailUser  `json:"to"`
+	Parameter CntmailPara `json:"dynamic_template_data"`
+}
+
+type CntmailPara struct {
+	ID      string `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	Email   string `json:"email"`
+}
