@@ -33,10 +33,10 @@ func (r *RstSGmail) SGConf(config model.Mails, param model.RstmailPara) (err err
 				Email: config.To.Address,
 				Name:  config.To.Express,
 			}},
-			Parameter: model.RstmailPara{
-				Reseturl: param.Reseturl,
-				Email: param.Email,
-			},
+				Parameter: model.RstmailPara{
+					Reseturl: param.Reseturl,
+					Email:    param.Email,
+				},
 			},
 		},
 		From: model.MailUser{
@@ -66,19 +66,19 @@ func (r *RstSGmail) SGConf(config model.Mails, param model.RstmailPara) (err err
 
 func (C *CntSGmail) SGConf(config model.Mails, param model.CntmailPara) (err error) {
 	// Mailデータを作成
-	C.Mail =  &model.CntMail{
+	C.Mail = &model.CntMail{
 		Subject: config.Subject,
 		Personalizations: []model.CntPersonal{
 			{To: []model.MailUser{{
 				Email: config.To.Address,
 				Name:  config.To.Express,
 			}},
-			Parameter: model.CntmailPara{
-				ID: param.ID,
-				Title: param.Title,
-				Content: param.Content,
-				Email: param.Email,
-			},
+				Parameter: model.CntmailPara{
+					ID:      param.ID,
+					Title:   param.Title,
+					Content: param.Content,
+					Email:   param.Email,
+				},
 			},
 		},
 		From: model.MailUser{
@@ -189,59 +189,3 @@ func Cnt_Sendmail(config model.Mails, param model.CntmailPara) (response *rest.R
 	}
 	return response, err
 }
-
-// func CntSGConfig(config model.Mails, param map[string]string) ( model.CntMail ) {
-// 	templateId := os.Getenv("SENDGRID_CNT_TEMPLATED_ID")
-//   // ﾒｰﾙの内容をJSONで作成する
-// 	subject := config.Subject
-
-// 	mail := model.CntMail{
-// 		Subject: subject,
-// 		Personalizations: []model.CntPersonal{
-// 			{To: []model.MailUser{{
-// 				Email: config.To.Address,
-// 				Name:  config.To.Express,
-// 			}},
-// 			Parameter: model.CntmailPara{
-// 				ID: param["ID"],
-// 				Title: param["title"],
-// 				Content: param["content"],
-// 				Email: param["email"],
-// 			},
-// 			},
-// 		},
-// 		From: model.MailUser{
-// 			Email: config.From.Address,
-// 			Name:  config.From.Express,
-// 		},
-// 		TemplateId: templateId,
-// 	}
-// 	return mail
-// }
-
-// func RstSGConfig(config model.Mails, param map[string]string) ( model.RstMail ) {
-// 	templateId := os.Getenv("SENDGRID_RST_TEMPLATED_ID")
-//   // ﾒｰﾙの内容をJSONで作成する
-// 	subject := config.Subject
-
-// 	mail := model.RstMail{
-// 		Subject: subject,
-// 		Personalizations: []model.RstPersonal{
-// 			{To: []model.MailUser{{
-// 				Email: config.To.Address,
-// 				Name:  config.To.Express,
-// 			}},
-// 			Parameter: model.RstmailPara{
-// 				Reseturl: param["reseturl"],
-// 				Email: param["email"],
-// 			},
-// 			},
-// 		},
-// 		From: model.MailUser{
-// 			Email: config.From.Address,
-// 			Name:  config.From.Express,
-// 		},
-// 		TemplateId: templateId,
-// 	}
-// 	return mail
-// }
