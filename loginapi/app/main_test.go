@@ -58,75 +58,75 @@ var jwttoken LJwttoken
 var token RToken
 var user Tdeleteuser
 
-// func TestSign(t *testing.T) {
-// 	router := setupRouter()
-// 	input := Tsignuser{os.Getenv("TESTUSER_FIRSTNAME"), os.Getenv("TESTUSER_LASTNAME"), os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestSign(t *testing.T) {
+	router := setupRouter()
+	input := Tsignuser{os.Getenv("TESTUSER_FIRSTNAME"), os.Getenv("TESTUSER_LASTNAME"), os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("POST", "/app/register", body)
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/register", body)
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	// println(w.Body.String())
+}
 
-// func TestLogin(t *testing.T) {
-// 	router := setupRouter()
-// 	input := Tloginuser{os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD")}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestLogin(t *testing.T) {
+	router := setupRouter()
+	input := Tloginuser{os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD")}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("POST", "/app/login", body)
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/login", body)
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
-// 	assert.Equal(t, nil, err)
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
+	assert.Equal(t, nil, err)
+	// println(w.Body.String())
+}
 
-// func TestUser(t *testing.T) {
-// 	router := setupRouter()
+func TestUser(t *testing.T) {
+	router := setupRouter()
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("GET", "/app/user", nil)
-// 	// Cookie
-// 	req.AddCookie(&http.Cookie{
-// 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
-// 		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
-// 	})
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/app/user", nil)
+	// Cookie
+	req.AddCookie(&http.Cookie{
+		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
+		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
+	})
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	err := json.Unmarshal(w.Body.Bytes(), &user)
-// 	assert.Equal(t, nil, err)
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	err := json.Unmarshal(w.Body.Bytes(), &user)
+	assert.Equal(t, nil, err)
+	// println(w.Body.String())
+}
 
-// func TestLogout(t *testing.T) {
-// 	router := setupRouter()
+func TestLogout(t *testing.T) {
+	router := setupRouter()
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("GET", "/app/logout", nil)
-// 	// Cookie
-// 	req.AddCookie(&http.Cookie{
-// 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
-// 		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
-// 	})
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/app/logout", nil)
+	// Cookie
+	req.AddCookie(&http.Cookie{
+		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
+		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
+	})
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
-// 	assert.Equal(t, nil, err)
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
+	assert.Equal(t, nil, err)
+	// println(w.Body.String())
+}
 
 func TestForgot(t *testing.T) {
 	router := setupRouter()
@@ -160,27 +160,27 @@ func TestReset(t *testing.T) {
 	// println(w.Body.String())
 }
 
-// func TestDelete(t *testing.T) {
-// 	router := setupRouter()
-// 	input := Tdeleteuser{user.ID}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestDelete(t *testing.T) {
+	router := setupRouter()
+	input := Tdeleteuser{user.ID}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("GET", "/app/delete", body)
-// 	// Cookie
-// 	req.AddCookie(&http.Cookie{
-// 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
-// 		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
-// 	})
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/app/delete", body)
+	// Cookie
+	req.AddCookie(&http.Cookie{
+		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
+		MaxAge: 3600 /* seconds */, Secure: true, HttpOnly: false,
+	})
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	// err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
-// 	// assert.Equal(t, nil, err)
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	// err := json.Unmarshal(w.Body.Bytes(), &jwttoken)
+	// assert.Equal(t, nil, err)
+	// println(w.Body.String())
+}
 
 func TestContact(t *testing.T) {
 	router := setupRouter()
