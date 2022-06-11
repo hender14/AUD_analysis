@@ -18,7 +18,6 @@ docker run --rm -v $(pwd):/opt swagger2markup/swagger2markup convert -i /opt/swa
 ```bash
 docker compose up -d
 localhost:8001 # サンプルのAPI仕様書の確認
-localhost:8002
-# ディレクトリ直下にある.yamlファイルのAPI仕様書の確認
+localhost:8002 # ディレクトリ直下にある.yamlファイルのAPI仕様書の確認
 localhost:8003/{path or parameter} # API動作の確認
 ```
