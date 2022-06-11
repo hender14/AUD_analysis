@@ -7,7 +7,7 @@ login API on API Gateway with a Cloud Run backend
 
 
 ### Version information
-*Version* : 1.0.1
+*Version* : 1.0.2
 
 
 ### URI scheme
@@ -26,6 +26,76 @@ test is automatically done by github action
 
 <a name="paths"></a>
 ## Paths
+
+<a name="contact"></a>
+### contact owner
+```
+POST /app/contact
+```
+
+
+#### Parameters
+
+|Type|Name|Schema|
+|---|---|---|
+|**Body**|**contact**  <br>*optional*|[Contact](#contact)|
+
+
+#### Responses
+
+|HTTP Code|Description|Schema|
+|---|---|---|
+|**200**|A successful response|string|
+
+
+#### Example HTTP request
+
+##### Request path
+```
+/app/contact
+```
+
+
+##### Request body
+```json
+{
+  "id" : "string",
+  "title" : "string",
+  "content" : "string",
+  "email" : "string"
+}
+```
+
+
+#### Example HTTP response
+
+##### Response 200
+```json
+"string"
+```
+
+
+<a name="authcorscontact"></a>
+### cors authentication
+```
+OPTIONS /app/contact
+```
+
+
+#### Responses
+
+|HTTP Code|Description|Schema|
+|---|---|---|
+|**204**|A successful response|No Content|
+
+
+#### Example HTTP request
+
+##### Request path
+```
+/app/contact
+```
+
 
 <a name="forgot"></a>
 ### send email for resetting password
@@ -402,6 +472,17 @@ OPTIONS /app/user
 
 <a name="definitions"></a>
 ## Definitions
+
+<a name="contact"></a>
+### Contact
+
+|Name|Description|Schema|
+|---|---|---|
+|**content**  <br>*required*|**Example** : `"string"`|string|
+|**email**  <br>*required*|**Example** : `"string"`|string|
+|**id**  <br>*required*|**Example** : `"string"`|string|
+|**title**  <br>*required*|**Example** : `"string"`|string|
+
 
 <a name="forgot"></a>
 ### Forgot
