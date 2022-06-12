@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: loginAPI
   description: login API on API Gateway with a Cloud Run backend
-  version: 1.0.1
+  version: 1.0.2
 schemes:
 - https
 produces:
@@ -132,6 +132,26 @@ paths:
         '204':
           description: A successful response
 
+  /app/contact:
+    post:
+      summary: contact owner
+      operationId: contact
+      parameters:
+        - in: body
+          name: contact
+          schema:
+            $ref: '#/definitions/Contact'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+    options:
+      summary: cors authentication
+      operationId: authcorscontact
+      responses:
+        '204':
+          description: A successful response
 
 
 definitions:
@@ -184,3 +204,19 @@ definitions:
       - token
       - password
       - password_confirm
+
+  Contact:
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+      email:
+        type: string
+    required:  
+      - id
+      - title
+      - content
+      - email
