@@ -2,11 +2,18 @@ package interactor
 
 import (
 	"app/domain"
-	"app/interfaces/gateway"
+	"app/usecase/port"
 )
 
 type UserInteractor struct {
-	User gateway.UserRepository
+	User port.UserRepository
+}
+
+// NewUserInputPort はUserInputPortを取得します．
+func NewUserInputPort(userRepository port.UserRepository) port.UserInputPort {
+	return &UserInteractor{
+		User: userRepository,
+	}
 }
 
 // user register

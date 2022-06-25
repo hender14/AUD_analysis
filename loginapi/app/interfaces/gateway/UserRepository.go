@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"app/domain"
+	"app/usecase/port"
 
 	"errors"
 	"fmt"
@@ -15,12 +16,19 @@ type Fsqparam struct {
 }
 
 type UserRepository struct {
-	Fsc Fsc
+	context CRUD
+}
+
+// NewUserRepository はUserRepositoryを返します．
+func NewUserRepository(c CRUD) port.UserRepository {
+	return &UserRepository{
+		context: c,
+	}
 }
 
 func (repo *UserRepository) QueryEmail(s *domain.InUser) error {
 	qparam := &Fsqparam{Collection: "SignUser", Key: "email", Condition: "==", Value: s.Email}
-	qrfield, err := repo.Fsc.Fsquery(qparam)
+	qrfield, err := repo.context.Fsquery(qparam)
 	if err != nil {
 		return err
 	}
@@ -33,7 +41,7 @@ func (repo *UserRepository) QueryEmail(s *domain.InUser) error {
 }
 
 func (repo *UserRepository) RegisterAccoount(s *domain.SignUser) error {
-	err := repo.Fsc.Fscreate(s)
+	err := repo.context.Fscreate(s)
 	if err != nil {
 		fmt.Printf("create result: %s/n", s)
 		fmt.Printf("err result: %s/n", err)

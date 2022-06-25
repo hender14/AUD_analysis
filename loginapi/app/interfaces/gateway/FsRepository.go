@@ -4,7 +4,7 @@ import (
 	"app/domain"
 )
 
-type Fsc interface {
+type CRUD interface {
 	Fscreate(*domain.SignUser) error
 	Fsquery(*Fsqparam) ([]domain.SignUser, error)
 }

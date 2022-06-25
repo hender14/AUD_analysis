@@ -16,6 +16,12 @@ require (
 )
 
 require (
+	github.com/golang/mock v1.6.0 // indirect
+	golang.org/x/mod v0.4.2 // indirect
+	golang.org/x/tools v0.1.5 // indirect
+)
+
+require (
 	cloud.google.com/go v0.100.2 // indirect
 	cloud.google.com/go/compute v1.2.0 // indirect
 	cloud.google.com/go/firestore v1.6.1 // indirect

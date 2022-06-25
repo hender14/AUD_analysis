@@ -5,15 +5,17 @@ import (
 
 	"app/controller"
 	"app/interfaces/controllers"
+	"app/interfaces/gateway"
+	"app/usecase/interactor"
 )
 
 type Routing struct {
-	Fsc  *Fsc
+	Fsc  *Fscontext
 	Gin  *gin.Engine
 	Port string
 }
 
-func NewRouting(f *Fsc) *Routing {
+func NewRouting(f *Fscontext) *Routing {
 	r := &Routing{
 		Fsc:  f,
 		Gin:  gin.Default(),
@@ -30,7 +32,12 @@ func (r *Routing) setMiddleware() {
 }
 
 func (r *Routing) setRouting() {
-	usersController := controllers.NewUsersController(r.Fsc)
+	// usersController := controllers.NewUsersController(r.Fsc)
+	usersController := controllers.UsersController{
+		InputFactory: interactor.NewUserInputPort,
+		RepoFactory:  gateway.NewUserRepository,
+		Conn:         r.Fsc,
+	}
 	// user registration
 	// r.Gin.POST("/app/register", controller.Sign)
 	r.Gin.POST("/register", func(c *gin.Context) { usersController.Sign(c) })

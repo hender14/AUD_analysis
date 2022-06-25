@@ -9,7 +9,7 @@ import (
 )
 
 // Create the entity
-func (f *Fsc) Fscreate(user *domain.SignUser) (err error) {
+func (f *Fscontext) Fscreate(user *domain.SignUser) (err error) {
 	if err := f.Fsc.NewRequest().CreateEntities(f.Ctx, user)(); err != nil {
 		fmt.Printf("create entity has problem: %s\n", err)
 		return err
@@ -61,7 +61,7 @@ func (f *Fsc) Fscreate(user *domain.SignUser) (err error) {
 // }
 
 // query the entity
-func (f *Fsc) Fsquery(param *gateway.Fsqparam) (qritem []domain.SignUser, err error) {
+func (f *Fscontext) Fsquery(param *gateway.Fsqparam) (qritem []domain.SignUser, err error) {
 	query := f.Fsc.Client.Collection(param.Collection).Where(param.Key, param.Condition, param.Value)
 	qritem = make([]domain.SignUser, 0)
 	if err := f.Fsc.NewRequest().QueryEntities(f.Ctx, query, &qritem)(); err != nil {

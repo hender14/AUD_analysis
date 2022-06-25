@@ -3,7 +3,7 @@ package controllers
 import (
 	"app/domain"
 	"app/interfaces/gateway"
-	"app/usecase/interactor"
+	"app/usecase/port"
 
 	"fmt"
 	"net/http"
@@ -12,15 +12,13 @@ import (
 )
 
 type UsersController struct {
-	Interactor interactor.UserInteractor
-}
-
-func NewUsersController(f gateway.Fsc) *UsersController {
-	return &UsersController{
-		Interactor: interactor.UserInteractor{
-			User: gateway.UserRepository{Fsc: f},
-		},
-	}
+	// OutputFactory interactor.UserInteractor
+	// -> presenter.NewUserOutputPort
+	InputFactory func(u port.UserRepository) port.UserInputPort
+	// -> interactor.NewUserInputPort
+	RepoFactory func(c gateway.CRUD) port.UserRepository
+	// -> gateway.NewUserRepository
+	Conn gateway.CRUD
 }
 
 // user register
@@ -33,7 +31,9 @@ func (controller *UsersController) Sign(c *gin.Context) {
 		return
 	}
 
-	account, err := controller.Interactor.Sign(user)
+	repository := controller.RepoFactory(controller.Conn)
+	inputPort := controller.InputFactory(repository)
+	account, err := inputPort.Sign(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
 		return

@@ -11,13 +11,13 @@ import (
 	"google.golang.org/api/option"
 )
 
-type Fsc struct {
+type Fscontext struct {
 	Ctx context.Context
 	Fsc *firestorm.FSClient
 }
 
-func NewDB() (*Fsc, error) {
-	f := new(Fsc)
+func NewDB() (*Fscontext, error) {
+	f := new(Fscontext)
 	err := f.NoSqlconnect()
 	if err != nil {
 		return nil, err
@@ -25,7 +25,7 @@ func NewDB() (*Fsc, error) {
 	return f, err
 }
 
-func (f *Fsc) NoSqlconnect() error {
+func (f *Fscontext) NoSqlconnect() error {
 	// firestormの初期化
 	f.Ctx = context.Background()
 	keyfile := Loadenv()
