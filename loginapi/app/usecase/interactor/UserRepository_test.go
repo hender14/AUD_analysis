@@ -21,33 +21,38 @@ func TestSign(t *testing.T) {
 	defer ctrl.Finish()
 
 	// ApiClientインターフェイスのmockを作成します
-	mockApiClinet := port.NewMockUserRepository(ctrl)
+	mockApiClinet_repo := port.NewMockUserRepository(ctrl)
+	mockApiClinet_out := port.NewMockUserOutputPort(ctrl)
 	// mockApiClinet := mock_port.NewMockUserRepository(ctrl)
 	// 作成したmockに対して期待する呼び出しと返り値を定義します
 	// EXPECT()では呼び出されたかどうか
 	// Request()ではそのメソッド名が指定した引数で呼び出されたかどうか
 	// Return()では返り値を指定します
-	mockApiClinet.EXPECT().QueryEmail(input).Return(nil).Times(1)
-	mockApiClinet.EXPECT().RegisterAccoount(gomock.Any()).Do(func(s *domain.SignUser) {
+	mockApiClinet_repo.EXPECT().QueryEmail(input).Return(nil).Times(1)
+	mockApiClinet_repo.EXPECT().RegisterAccoount(gomock.Any()).Do(func(s *domain.SignUser) {
 		// Do を使ってモック関数への引数を得ることができる。
 		// Do に渡す引数は`actUser`を持つクロージャ関数となる。
 		check = s
 	}).Return(nil).Times(1)
+	mockApiClinet_out.EXPECT().Render(gomock.Any(), gomock.Any()).Times(1)
+	mockApiClinet_out.EXPECT().RenderError(gomock.Any(), gomock.Any()).Times(0)
 	// mockApiClinet.EXPECT().RegisterAccoount(gomock.Any()).Return(nil).Times(1)
 
 	d := &UserInteractor{}
 	// d.User = &ApiClientMock{} // mockを登録
-	d.User = mockApiClinet // mockを登録
+	d.User = mockApiClinet_repo      // mockを登録
+	d.OutputPort = mockApiClinet_out // mockを登録
 	expected := input
 
 	// res, err := d.Sign(input)
-	res, err := d.Sign(expected)
-	if err != nil {
-		t.Fatal("Register error!", err)
-	}
-	if res.FirstName != expected.FirstName || res.LastName != expected.LastName || res.Email != expected.Email {
-		t.Fatal("Value does not match.")
-	}
+	// res, err := d.Sign(expected)
+	d.Sign(expected)
+	// if err != nil {
+	// 	t.Fatal("Register error!", err)
+	// }
+	// if res.FirstName != expected.FirstName || res.LastName != expected.LastName || res.Email != expected.Email {
+	// 	t.Fatal("Value does not match.")
+	// }
 	if len(check.Password) != 60 {
 		t.Fatal("Value does not match.")
 	}

@@ -7,6 +7,7 @@ package port
 import (
 	reflect "reflect"
 
+	gin "github.com/gin-gonic/gin"
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/hender14/app/domain"
 )
@@ -114,31 +115,72 @@ func (m *MockUserInputPort) EXPECT() *MockUserInputPortMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockUserInputPort) Delete(input *domain.SignUser) (*domain.SignUser, error) {
+func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 *domain.SignUser) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", input)
-	ret0, _ := ret[0].(*domain.SignUser)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	m.ctrl.Call(m, "Delete", arg0, arg1)
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockUserInputPortMockRecorder) Delete(input interface{}) *gomock.Call {
+func (mr *MockUserInputPortMockRecorder) Delete(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserInputPort)(nil).Delete), input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserInputPort)(nil).Delete), arg0, arg1)
 }
 
 // Sign mocks base method.
-func (m *MockUserInputPort) Sign(input *domain.InUser) (*domain.SignUser, error) {
+func (m *MockUserInputPort) Sign(arg0 *domain.InUser) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Sign", input)
-	ret0, _ := ret[0].(*domain.SignUser)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	m.ctrl.Call(m, "Sign", arg0)
 }
 
 // Sign indicates an expected call of Sign.
-func (mr *MockUserInputPortMockRecorder) Sign(input interface{}) *gomock.Call {
+func (mr *MockUserInputPortMockRecorder) Sign(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sign", reflect.TypeOf((*MockUserInputPort)(nil).Sign), input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sign", reflect.TypeOf((*MockUserInputPort)(nil).Sign), arg0)
+}
+
+// MockUserOutputPort is a mock of UserOutputPort interface.
+type MockUserOutputPort struct {
+	ctrl     *gomock.Controller
+	recorder *MockUserOutputPortMockRecorder
+}
+
+// MockUserOutputPortMockRecorder is the mock recorder for MockUserOutputPort.
+type MockUserOutputPortMockRecorder struct {
+	mock *MockUserOutputPort
+}
+
+// NewMockUserOutputPort creates a new mock instance.
+func NewMockUserOutputPort(ctrl *gomock.Controller) *MockUserOutputPort {
+	mock := &MockUserOutputPort{ctrl: ctrl}
+	mock.recorder = &MockUserOutputPortMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockUserOutputPort) EXPECT() *MockUserOutputPortMockRecorder {
+	return m.recorder
+}
+
+// Render mocks base method.
+func (m *MockUserOutputPort) Render(arg0 interface{}, arg1 error) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Render", arg0, arg1)
+}
+
+// Render indicates an expected call of Render.
+func (mr *MockUserOutputPortMockRecorder) Render(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Render", reflect.TypeOf((*MockUserOutputPort)(nil).Render), arg0, arg1)
+}
+
+// RenderError mocks base method.
+func (m *MockUserOutputPort) RenderError(arg0 interface{}, arg1 error) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "RenderError", arg0, arg1)
+}
+
+// RenderError indicates an expected call of RenderError.
+func (mr *MockUserOutputPortMockRecorder) RenderError(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenderError", reflect.TypeOf((*MockUserOutputPort)(nil).RenderError), arg0, arg1)
 }

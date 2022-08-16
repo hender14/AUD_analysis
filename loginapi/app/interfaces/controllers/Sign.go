@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"os"
-
 	"github.com/hender14/app/domain"
 	"github.com/hender14/app/interfaces/gateway"
 	"github.com/hender14/app/usecase/port"
@@ -14,9 +12,9 @@ import (
 )
 
 type UsersController struct {
-	// OutputFactory interactor.UserInteractor
+	OutputFactory func(ctx *gin.Context) port.UserOutputPort
 	// -> presenter.NewUserOutputPort
-	InputFactory func(u port.UserRepository) port.UserInputPort
+	InputFactory func(o port.UserOutputPort, u port.UserRepository) port.UserInputPort
 	// -> interactor.NewUserInputPort
 	RepoFactory func(c gateway.CRUD) port.UserRepository
 	// -> gateway.NewUserRepository
@@ -33,15 +31,17 @@ func (controller *UsersController) Sign(c *gin.Context) {
 		return
 	}
 
+	outputPort := controller.OutputFactory(c)
 	repository := controller.RepoFactory(controller.Conn)
-	inputPort := controller.InputFactory(repository)
-	account, err := inputPort.Sign(user)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
-		return
-	}
-
-	c.JSON(http.StatusOK, account)
+	inputPort := controller.InputFactory(outputPort, repository)
+	inputPort.Sign(user)
+	// account, err := inputPort.Sign(user)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, account)
+	return
 }
 
 func (controller *UsersController) Delete(c *gin.Context) {
@@ -53,16 +53,18 @@ func (controller *UsersController) Delete(c *gin.Context) {
 		return
 	}
 
+	outputPort := controller.OutputFactory(c)
 	repository := controller.RepoFactory(controller.Conn)
-	inputPort := controller.InputFactory(repository)
-	account, err := inputPort.Delete(user)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
-		return
-	}
+	inputPort := controller.InputFactory(outputPort, repository)
+	inputPort.Delete(c, user)
+	// account, err := inputPort.Delete(user)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
+	// 	return
+	// }
 
-	// samesiteをnonemodeにする
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("jwt", "", 3600 /* time.Now().Add(time.Hour * 24) */, "/app", os.Getenv("CORS_ADDRESS"), true, false)
-	c.JSON(http.StatusOK, account)
+	// // samesiteをnonemodeにする
+	// c.SetSameSite(http.SameSiteNoneMode)
+	// c.SetCookie("jwt", "", 3600 /* time.Now().Add(time.Hour * 24) */, "/app", os.Getenv("CORS_ADDRESS"), true, false)
+	// c.JSON(http.StatusOK, account)
 }

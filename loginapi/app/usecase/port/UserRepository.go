@@ -1,6 +1,9 @@
 package port
 
-import "github.com/hender14/app/domain"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/hender14/app/domain"
+)
 
 type UserRepository interface {
 	QueryEmail(*domain.InUser) (err error)
@@ -10,6 +13,11 @@ type UserRepository interface {
 }
 
 type UserInputPort interface {
-	Sign(input *domain.InUser) (*domain.SignUser, error)
-	Delete(input *domain.SignUser) (*domain.SignUser, error)
+	Sign(*domain.InUser)
+	Delete(*gin.Context, *domain.SignUser)
+}
+
+type UserOutputPort interface {
+	Render(interface{}, error)
+	RenderError(interface{}, error)
 }
