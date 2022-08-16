@@ -6,6 +6,7 @@ import (
 	"github.com/hender14/app/controller"
 	"github.com/hender14/app/interfaces/controllers"
 	"github.com/hender14/app/interfaces/gateway"
+	"github.com/hender14/app/interfaces/presenter"
 	"github.com/hender14/app/usecase/interactor"
 )
 
@@ -34,9 +35,10 @@ func (r *Routing) setMiddleware() {
 func (r *Routing) setRouting() {
 	// usersController := controllers.NewUsersController(r.Fsc)
 	usersController := controllers.UsersController{
-		InputFactory: interactor.NewUserInputPort,
-		RepoFactory:  gateway.NewUserRepository,
-		Conn:         r.Fsc,
+		OutputFactory: presenter.NewUserOutputPort,
+		InputFactory:  interactor.NewUserInputPort,
+		RepoFactory:   gateway.NewUserRepository,
+		Conn:          r.Fsc,
 	}
 	// user registration
 	// r.Gin.POST("/app/register", controller.Sign)
