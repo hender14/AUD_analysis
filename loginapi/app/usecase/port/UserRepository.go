@@ -1,6 +1,6 @@
 package port
 
-import "app/domain"
+import "github.com/hender14/app/domain"
 
 type UserRepository interface {
 	QueryEmail(*domain.InUser) (err error)
@@ -8,5 +8,5 @@ type UserRepository interface {
 }
 
 type UserInputPort interface {
-	Sign(input *domain.InUser) (interface{}, error)
+	Sign(input *domain.InUser) (*domain.SignUser, error)
 }

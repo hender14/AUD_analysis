@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"app/model"
-	"app/service"
+	"github.com/hender14/app/model"
+	"github.com/hender14/app/service"
 )
 
 func Contact(ctx *gin.Context) {

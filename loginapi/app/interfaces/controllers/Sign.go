@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"app/domain"
-	"app/interfaces/gateway"
-	"app/usecase/port"
+	"github.com/hender14/app/domain"
+	"github.com/hender14/app/interfaces/gateway"
+	"github.com/hender14/app/usecase/port"
 
 	"fmt"
 	"net/http"

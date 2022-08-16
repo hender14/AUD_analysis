@@ -1,8 +1,10 @@
 package interactor
 
 import (
-	"app/domain"
-	"app/usecase/port"
+	// "app/domain"
+
+	"github.com/hender14/app/domain"
+	"github.com/hender14/app/usecase/port"
 )
 
 type UserInteractor struct {
@@ -17,7 +19,7 @@ func NewUserInputPort(userRepository port.UserRepository) port.UserInputPort {
 }
 
 // user register
-func (interactor *UserInteractor) Sign(input *domain.InUser) (interface{}, error) {
+func (interactor *UserInteractor) Sign(input *domain.InUser) (*domain.SignUser, error) {
 	s := new(domain.SignUser)
 
 	// password check
@@ -29,7 +31,7 @@ func (interactor *UserInteractor) Sign(input *domain.InUser) (interface{}, error
 	// query the entity
 	err = interactor.User.QueryEmail(input)
 	if err != nil {
-		return input.Email, err
+		return nil, err
 	}
 
 	// create account info

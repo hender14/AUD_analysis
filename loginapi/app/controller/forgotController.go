@@ -10,9 +10,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"app/model"
-	"app/service"
-	"app/service/gcp"
+	"github.com/hender14/app/model"
+	"github.com/hender14/app/service"
+	"github.com/hender14/app/service/gcp"
 )
 
 type inforgotUser struct {

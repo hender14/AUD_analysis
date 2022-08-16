@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 
-	"app/model"
-	"app/service/gcp"
+	"github.com/hender14/app/model"
+	"github.com/hender14/app/service/gcp"
 )
 
 type inLoginUser struct {

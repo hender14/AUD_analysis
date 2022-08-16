@@ -11,7 +11,7 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/jschoedt/go-firestorm"
 
-	"app/model"
+	"github.com/hender14/app/model"
 )
 
 var fsc model.Fsc

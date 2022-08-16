@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"app/domain"
+	"github.com/hender14/app/domain"
 )
 
 type CRUD interface {

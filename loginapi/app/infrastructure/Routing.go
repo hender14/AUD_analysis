@@ -3,10 +3,10 @@ package infrastructure
 import (
 	"github.com/gin-gonic/gin"
 
-	"app/controller"
-	"app/interfaces/controllers"
-	"app/interfaces/gateway"
-	"app/usecase/interactor"
+	"github.com/hender14/app/controller"
+	"github.com/hender14/app/interfaces/controllers"
+	"github.com/hender14/app/interfaces/gateway"
+	"github.com/hender14/app/usecase/interactor"
 )
 
 type Routing struct {

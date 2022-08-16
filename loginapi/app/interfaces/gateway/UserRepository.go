@@ -1,8 +1,8 @@
 package gateway
 
 import (
-	"app/domain"
-	"app/usecase/port"
+	"github.com/hender14/app/domain"
+	"github.com/hender14/app/usecase/port"
 
 	"errors"
 	"fmt"

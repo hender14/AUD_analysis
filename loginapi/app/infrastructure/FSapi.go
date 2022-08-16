@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"app/domain"
-	"app/interfaces/gateway"
+	"github.com/hender14/app/domain"
+	"github.com/hender14/app/interfaces/gateway"
 )
 
 // Create the entity

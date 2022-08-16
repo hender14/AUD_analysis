@@ -6,7 +6,7 @@ import (
 	"os"
 	// "testing"
 
-	"app/model"
+	"github.com/hender14/app/model"
 
 	"github.com/sendgrid/rest"
 	"github.com/sendgrid/sendgrid-go"

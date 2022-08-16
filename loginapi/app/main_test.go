@@ -1,7 +1,7 @@
 package main
 
 import (
-	"app/infrastructure"
+	"github.com/hender14/app/infrastructure"
 	"encoding/json"
 	"log"
 	"net/http"
