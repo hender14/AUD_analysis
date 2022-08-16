@@ -35,16 +35,16 @@ func (f *Fscontext) Fscreate(user *domain.SignUser) (err error) {
 //   return
 // }
 
-// // Read the entity by ID
-// func Fsread (id string) (rditem *model.SignUser, err error) {
-//   rditem = &model.SignUser{ID: id}
-//   if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, rditem)(); err != nil {
-//     fmt.Printf("read result: %s\n", rditem)
-//     fmt.Printf("user was not found by search: %s\n", err)
-//     return nil, err
-//   }
-//   return rditem, err
-// }
+// Read the entity by ID
+func (f *Fscontext) Fsread(id string) (rditem *domain.SignUser, err error) {
+	rditem = &domain.SignUser{ID: id}
+	if _, err := f.Fsc.NewRequest().GetEntities(f.Ctx, rditem)(); err != nil {
+		fmt.Printf("read result: %s\n", rditem)
+		fmt.Printf("user was not found by search: %s\n", err)
+		return nil, err
+	}
+	return rditem, err
+}
 
 // // Update the entity
 // func Fsupdate (user *model.SignUser) (err error) {
@@ -80,15 +80,15 @@ func (f *Fscontext) Fsquery(param *gateway.Fsqparam) (qritem []domain.SignUser, 
 //   return qritem, err
 // }
 
-// // Delete the entity
-// func Fsdelete (user *model.SignUser) (err error) {
-//   fsc.Fsc.NewRequest().DeleteEntities(fsc.Ctx, user)()
-//   dlitem := &model.SignUser{ID: user.ID}
-//   if _, err := fsc.Fsc.NewRequest().GetEntities(fsc.Ctx, dlitem)(); err == nil {
-//     fmt.Printf("Delete has not completed: %s\n", user.ID)
-//   }
-//   return err
-// }
+// Delete the entity
+func (f *Fscontext) Fsdelete(user *domain.SignUser) (err error) {
+	f.Fsc.NewRequest().DeleteEntities(f.Ctx, user)()
+	dlitem := &domain.SignUser{ID: user.ID}
+	if _, err := f.Fsc.NewRequest().GetEntities(f.Ctx, dlitem)(); err == nil {
+		fmt.Printf("Delete has not completed: %s\n", user.ID)
+	}
+	return err
+}
 
 // func Fsdelete_rst (user *model.PasswordReset) (err error) {
 //   fsc.Fsc.NewRequest().DeleteEntities(fsc.Ctx, user)()

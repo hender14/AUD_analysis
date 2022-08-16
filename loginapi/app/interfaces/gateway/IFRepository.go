@@ -7,4 +7,6 @@ import (
 type CRUD interface {
 	Fscreate(*domain.SignUser) error
 	Fsquery(*Fsqparam) ([]domain.SignUser, error)
+	Fsread(string) (*domain.SignUser, error)
+	Fsdelete(*domain.SignUser) error
 }

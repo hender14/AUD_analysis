@@ -9,16 +9,6 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-// type ApiClientMock struct {}
-
-// func	(a *ApiClientMock)QueryEmail(input *domain.InUser) (error) {
-// 	return nil
-// }
-
-// type DataRegister struct {
-// 	client ApiClient // インターフェイスに依存しているだけで実装は存在しない
-// }
-
 func TestSign(t *testing.T) {
 	var r gomock.TestReporter
 	var check *domain.SignUser

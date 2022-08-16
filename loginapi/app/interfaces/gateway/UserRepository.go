@@ -50,3 +50,26 @@ func (repo *UserRepository) RegisterAccoount(s *domain.SignUser) error {
 
 	return err
 }
+
+func (repo *UserRepository) ReadID(d *domain.SignUser) error {
+	account, err := repo.context.Fsread(d.ID)
+	if err != nil {
+		fmt.Printf("query result: %s/n", account)
+		fmt.Printf("query err result: %s/n", err)
+		return err
+	}
+	if account.ID == "" {
+		err = errors.New("user should have an auto generated ID")
+		fmt.Printf("no ID err: %s/n", err)
+		return err
+	}
+	return err
+}
+
+func (repo *UserRepository) DeleteAccount(d *domain.SignUser) error {
+	err := repo.context.Fsdelete(d)
+	if err != nil {
+		return err
+	}
+	return err
+}

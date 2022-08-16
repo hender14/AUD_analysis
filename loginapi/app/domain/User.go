@@ -25,6 +25,11 @@ type SignUser struct {
 	Year      time.Time `json:"year"`
 }
 
+type deleteUser struct {
+	ID      string `json:"id"`
+	account *SignUser
+}
+
 // password check
 func CheckPassword(i *InUser) (err error) {
 	if i.Password != i.Password_confirm {

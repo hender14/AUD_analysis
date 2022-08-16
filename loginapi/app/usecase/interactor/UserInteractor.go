@@ -1,8 +1,6 @@
 package interactor
 
 import (
-	// "app/domain"
-
 	"github.com/hender14/app/domain"
 	"github.com/hender14/app/usecase/port"
 )
@@ -46,4 +44,18 @@ func (interactor *UserInteractor) Sign(input *domain.InUser) (*domain.SignUser, 
 		return s, err
 	}
 	return s, nil
+}
+
+func (interactor *UserInteractor) Delete(input *domain.SignUser) (*domain.SignUser, error) {
+	d := new(domain.SignUser)
+	// query the entity
+	err := interactor.User.ReadID(d)
+	if err != nil {
+		return d, err
+	}
+	err = interactor.User.DeleteAccount(input)
+	if err != nil {
+		return d, err
+	}
+	return d, err
 }
