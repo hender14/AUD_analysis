@@ -6,7 +6,6 @@ import (
 	"github.com/hender14/app/usecase/port"
 
 	"fmt"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,50 +20,40 @@ type UsersController struct {
 	Conn gateway.CRUD
 }
 
+type deleteUser struct {
+	ID string `json:"id"`
+}
+
 // user register
 func (controller *UsersController) Sign(c *gin.Context) {
+	outputPort := controller.OutputFactory(c)
+	repository := controller.RepoFactory(controller.Conn)
+	inputPort := controller.InputFactory(outputPort, repository)
+
 	user := new(domain.InUser)
 	// parse request data
 	if err := c.BindJSON(&user); err != nil {
 		fmt.Printf("parse request err: %s\n", err)
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for input data"})
+		outputPort.RenderError(user, err)
 		return
 	}
 
-	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
-	inputPort := controller.InputFactory(outputPort, repository)
 	inputPort.Sign(user)
-	// account, err := inputPort.Sign(user)
-	// if err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, account)
 	return
 }
 
 func (controller *UsersController) Delete(c *gin.Context) {
-	user := new(domain.SignUser)
-	// parse request data
-	if err := c.BindJSON(&user); err != nil {
-		fmt.Printf("parse request err: %s\n", err)
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for input data"})
-		return
-	}
-
 	outputPort := controller.OutputFactory(c)
 	repository := controller.RepoFactory(controller.Conn)
 	inputPort := controller.InputFactory(outputPort, repository)
-	inputPort.Delete(c, user)
-	// account, err := inputPort.Delete(user)
-	// if err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Tt has problem for account register"})
-	// 	return
-	// }
 
-	// // samesiteをnonemodeにする
-	// c.SetSameSite(http.SameSiteNoneMode)
-	// c.SetCookie("jwt", "", 3600 /* time.Now().Add(time.Hour * 24) */, "/app", os.Getenv("CORS_ADDRESS"), true, false)
-	// c.JSON(http.StatusOK, account)
+	user := new(deleteUser)
+	// parse request data
+	if err := c.BindJSON(&user); err != nil {
+		fmt.Printf("parse request err: %s\n", err)
+		outputPort.RenderError(user.ID, err)
+		return
+	}
+	inputPort.Delete(c, user.ID)
+	return
 }

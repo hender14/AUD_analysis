@@ -6,15 +6,19 @@ import (
 )
 
 type UserRepository interface {
-	QueryEmail(*domain.InUser) (err error)
-	RegisterAccoount(*domain.SignUser) (err error)
-	ReadID(*domain.SignUser) error
+	QueryEmail_none(string) (domain.SignUser, error)
+	QueryEmail(string) (domain.SignUser, error)
+	RegisterAccoount(*domain.SignUser) error
+	ReadID(string) (*domain.SignUser, error)
 	DeleteAccount(*domain.SignUser) error
 }
 
 type UserInputPort interface {
 	Sign(*domain.InUser)
-	Delete(*gin.Context, *domain.SignUser)
+	Delete(*gin.Context, string)
+	Login(*gin.Context, *domain.LoginUser)
+	Logout(*gin.Context)
+	User(*gin.Context, string)
 }
 
 type UserOutputPort interface {

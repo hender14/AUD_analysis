@@ -50,11 +50,12 @@ func (mr *MockUserRepositoryMockRecorder) DeleteAccount(arg0 interface{}) *gomoc
 }
 
 // QueryEmail mocks base method.
-func (m *MockUserRepository) QueryEmail(arg0 *domain.InUser) error {
+func (m *MockUserRepository) QueryEmail(arg0 string) (domain.SignUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryEmail", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(domain.SignUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // QueryEmail indicates an expected call of QueryEmail.
@@ -63,12 +64,28 @@ func (mr *MockUserRepositoryMockRecorder) QueryEmail(arg0 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryEmail", reflect.TypeOf((*MockUserRepository)(nil).QueryEmail), arg0)
 }
 
+// QueryEmail_none mocks base method.
+func (m *MockUserRepository) QueryEmail_none(arg0 string) (domain.SignUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryEmail_none", arg0)
+	ret0, _ := ret[0].(domain.SignUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryEmail_none indicates an expected call of QueryEmail_none.
+func (mr *MockUserRepositoryMockRecorder) QueryEmail_none(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryEmail_none", reflect.TypeOf((*MockUserRepository)(nil).QueryEmail_none), arg0)
+}
+
 // ReadID mocks base method.
-func (m *MockUserRepository) ReadID(arg0 *domain.SignUser) error {
+func (m *MockUserRepository) ReadID(arg0 string) (*domain.SignUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadID", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*domain.SignUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // ReadID indicates an expected call of ReadID.
@@ -115,7 +132,7 @@ func (m *MockUserInputPort) EXPECT() *MockUserInputPortMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 *domain.SignUser) {
+func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 string) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", arg0, arg1)
 }
@@ -124,6 +141,30 @@ func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 *domain.SignUser) {
 func (mr *MockUserInputPortMockRecorder) Delete(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserInputPort)(nil).Delete), arg0, arg1)
+}
+
+// Login mocks base method.
+func (m *MockUserInputPort) Login(arg0 *gin.Context, arg1 *domain.LoginUser) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Login", arg0, arg1)
+}
+
+// Login indicates an expected call of Login.
+func (mr *MockUserInputPortMockRecorder) Login(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockUserInputPort)(nil).Login), arg0, arg1)
+}
+
+// Logout mocks base method.
+func (m *MockUserInputPort) Logout(arg0 *gin.Context) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Logout", arg0)
+}
+
+// Logout indicates an expected call of Logout.
+func (mr *MockUserInputPortMockRecorder) Logout(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logout", reflect.TypeOf((*MockUserInputPort)(nil).Logout), arg0)
 }
 
 // Sign mocks base method.
@@ -136,6 +177,18 @@ func (m *MockUserInputPort) Sign(arg0 *domain.InUser) {
 func (mr *MockUserInputPortMockRecorder) Sign(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sign", reflect.TypeOf((*MockUserInputPort)(nil).Sign), arg0)
+}
+
+// User mocks base method.
+func (m *MockUserInputPort) User(arg0 *gin.Context, arg1 string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "User", arg0, arg1)
+}
+
+// User indicates an expected call of User.
+func (mr *MockUserInputPortMockRecorder) User(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "User", reflect.TypeOf((*MockUserInputPort)(nil).User), arg0, arg1)
 }
 
 // MockUserOutputPort is a mock of UserOutputPort interface.

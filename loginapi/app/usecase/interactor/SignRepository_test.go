@@ -40,7 +40,7 @@ func TestSign(t *testing.T) {
 
 	d := &UserInteractor{}
 	// d.User = &ApiClientMock{} // mockを登録
-	d.User = mockApiClinet_repo      // mockを登録
+	d.UserRepo = mockApiClinet_repo  // mockを登録
 	d.OutputPort = mockApiClinet_out // mockを登録
 	expected := input
 

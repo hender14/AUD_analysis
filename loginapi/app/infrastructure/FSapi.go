@@ -41,7 +41,7 @@ func (f *Fscontext) Fsread(id string) (rditem *domain.SignUser, err error) {
 	if _, err := f.Fsc.NewRequest().GetEntities(f.Ctx, rditem)(); err != nil {
 		fmt.Printf("read result: %s\n", rditem)
 		fmt.Printf("user was not found by search: %s\n", err)
-		return nil, err
+		return rditem, err
 	}
 	return rditem, err
 }

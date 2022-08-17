@@ -41,19 +41,18 @@ func (r *Routing) setRouting() {
 		Conn:          r.Fsc,
 	}
 	// user registration
-	// r.Gin.POST("/app/register", controller.Sign)
 	r.Gin.POST("/register", func(c *gin.Context) { usersController.Sign(c) })
 	// login
-	r.Gin.POST("/app/login", controller.Login)
+	r.Gin.POST("/app/login", func(c *gin.Context) { usersController.Login(c) })
 	// logout
-	r.Gin.GET("/app/logout", controller.Logout)
+	r.Gin.GET("/app/logout", func(c *gin.Context) { usersController.Logout(c) })
 	// get user info
-	r.Gin.GET("/app/user", controller.User)
+	r.Gin.GET("/app/user", func(c *gin.Context) { usersController.User(c) })
 	// reset user info
 	r.Gin.POST("/app/forgot", controller.Forgot)
 	r.Gin.POST("/app/reset", controller.Reset)
 	// delete user info
-	r.Gin.GET("/app/delete", controller.Delete)
+	r.Gin.GET("/app/delete", func(c *gin.Context) { usersController.Delete(c) })
 }
 
 func (r *Routing) Run() {
