@@ -28,7 +28,7 @@ func TestSign(t *testing.T) {
 	// EXPECT()では呼び出されたかどうか
 	// Request()ではそのメソッド名が指定した引数で呼び出されたかどうか
 	// Return()では返り値を指定します
-	mockApiClinet_repo.EXPECT().QueryEmail(input).Return(nil).Times(1)
+	mockApiClinet_repo.EXPECT().QueryEmail_none(input.Email).Return(nil, nil).Times(1)
 	mockApiClinet_repo.EXPECT().RegisterAccoount(gomock.Any()).Do(func(s *domain.SignUser) {
 		// Do を使ってモック関数への引数を得ることができる。
 		// Do に渡す引数は`actUser`を持つクロージャ関数となる。

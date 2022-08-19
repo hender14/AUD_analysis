@@ -11,7 +11,7 @@ import (
 // login
 func (controller *UsersController) Login(c *gin.Context) {
 	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
+	repository := controller.RepoFactory(controller.Conn, controller.Config)
 	inputPort := controller.InputFactory(outputPort, repository)
 
 	user := new(domain.LoginUser)
@@ -28,7 +28,7 @@ func (controller *UsersController) Login(c *gin.Context) {
 // logout
 func (controller *UsersController) Logout(c *gin.Context) {
 	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
+	repository := controller.RepoFactory(controller.Conn, controller.Config)
 	inputPort := controller.InputFactory(outputPort, repository)
 
 	inputPort.Logout(c)
@@ -38,7 +38,7 @@ func (controller *UsersController) Logout(c *gin.Context) {
 // get user info
 func (controller *UsersController) User(c *gin.Context) {
 	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
+	repository := controller.RepoFactory(controller.Conn, controller.Config)
 	inputPort := controller.InputFactory(outputPort, repository)
 
 	// get JWT token from Cookie

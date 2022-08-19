@@ -4,7 +4,13 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sendgrid/rest"
+	"github.com/sendgrid/sendgrid-go"
 )
+
+type Sgconfig struct {
+	Conf rest.Request
+}
 
 // CORS Middleware
 func CORS() gin.HandlerFunc {
@@ -30,4 +36,17 @@ func setPort() string {
 		port = "8080"
 	}
 	return port
+}
+
+func rstNewRequest() (r *Sgconfig) {
+	r = new(Sgconfig)
+	apikey := os.Getenv("SENDGRID_API_KEY")
+	// ﾎｽﾄ
+	host := "https://api.sendgrid.com"
+	// ｴﾝﾄﾞﾎﾟｲﾝﾄ
+	endpoint := "/v3/mail/send"
+	// API KEYとｴﾝﾄﾞﾎﾟｲﾝﾄ、ﾎｽﾄからrestﾊﾟｯｹｰｼﾞのRequestを生成
+	r.Conf = sendgrid.GetRequest(apikey, endpoint, host)
+
+	return r
 }

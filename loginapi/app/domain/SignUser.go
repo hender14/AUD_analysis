@@ -31,8 +31,8 @@ type deleteUser struct {
 }
 
 // password check
-func CheckPassword(i *InUser) (err error) {
-	if i.Password != i.Password_confirm {
+func CheckPassword(password string, password_confirm string) (err error) {
+	if password != password_confirm {
 		err = errors.New("password is different")
 		fmt.Printf("password confirm err: %s/n", err)
 		return err

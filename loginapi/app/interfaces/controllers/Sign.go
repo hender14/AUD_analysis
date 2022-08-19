@@ -15,9 +15,10 @@ type UsersController struct {
 	// -> presenter.NewUserOutputPort
 	InputFactory func(o port.UserOutputPort, u port.UserRepository) port.UserInputPort
 	// -> interactor.NewUserInputPort
-	RepoFactory func(c gateway.CRUD) port.UserRepository
+	RepoFactory func(c gateway.CRUD, s gateway.MAIL) port.UserRepository
 	// -> gateway.NewUserRepository
-	Conn gateway.CRUD
+	Conn   gateway.CRUD
+	Config gateway.MAIL
 }
 
 type deleteUser struct {
@@ -27,7 +28,7 @@ type deleteUser struct {
 // user register
 func (controller *UsersController) Sign(c *gin.Context) {
 	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
+	repository := controller.RepoFactory(controller.Conn, controller.Config)
 	inputPort := controller.InputFactory(outputPort, repository)
 
 	user := new(domain.InUser)
@@ -44,7 +45,7 @@ func (controller *UsersController) Sign(c *gin.Context) {
 
 func (controller *UsersController) Delete(c *gin.Context) {
 	outputPort := controller.OutputFactory(c)
-	repository := controller.RepoFactory(controller.Conn)
+	repository := controller.RepoFactory(controller.Conn, controller.Config)
 	inputPort := controller.InputFactory(outputPort, repository)
 
 	user := new(deleteUser)

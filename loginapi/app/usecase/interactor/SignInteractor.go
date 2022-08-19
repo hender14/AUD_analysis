@@ -27,7 +27,7 @@ func (interactor *UserInteractor) Sign(input *domain.InUser) {
 	s := new(domain.SignUser)
 
 	// password check
-	err := domain.CheckPassword(input)
+	err := domain.CheckPassword(input.Password, input.Password_confirm)
 	if err != nil {
 		interactor.OutputPort.RenderError(input, err)
 		return

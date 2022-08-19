@@ -10,6 +10,7 @@ import (
 	gin "github.com/gin-gonic/gin"
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/hender14/app/domain"
+	rest "github.com/sendgrid/rest"
 )
 
 // MockUserRepository is a mock of UserRepository interface.
@@ -35,6 +36,20 @@ func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 	return m.recorder
 }
 
+// DeleteAccoount mocks base method.
+func (m *MockUserRepository) DeleteAccoount(arg0 *domain.ForgotUser) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAccoount", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAccoount indicates an expected call of DeleteAccoount.
+func (mr *MockUserRepositoryMockRecorder) DeleteAccoount(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccoount", reflect.TypeOf((*MockUserRepository)(nil).DeleteAccoount), arg0)
+}
+
 // DeleteAccount mocks base method.
 func (m *MockUserRepository) DeleteAccount(arg0 *domain.SignUser) error {
 	m.ctrl.T.Helper()
@@ -50,10 +65,10 @@ func (mr *MockUserRepositoryMockRecorder) DeleteAccount(arg0 interface{}) *gomoc
 }
 
 // QueryEmail mocks base method.
-func (m *MockUserRepository) QueryEmail(arg0 string) (domain.SignUser, error) {
+func (m *MockUserRepository) QueryEmail(arg0 string) (*domain.SignUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryEmail", arg0)
-	ret0, _ := ret[0].(domain.SignUser)
+	ret0, _ := ret[0].(*domain.SignUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +80,10 @@ func (mr *MockUserRepositoryMockRecorder) QueryEmail(arg0 interface{}) *gomock.C
 }
 
 // QueryEmail_none mocks base method.
-func (m *MockUserRepository) QueryEmail_none(arg0 string) (domain.SignUser, error) {
+func (m *MockUserRepository) QueryEmail_none(arg0 string) (*domain.SignUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryEmail_none", arg0)
-	ret0, _ := ret[0].(domain.SignUser)
+	ret0, _ := ret[0].(*domain.SignUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -77,6 +92,21 @@ func (m *MockUserRepository) QueryEmail_none(arg0 string) (domain.SignUser, erro
 func (mr *MockUserRepositoryMockRecorder) QueryEmail_none(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryEmail_none", reflect.TypeOf((*MockUserRepository)(nil).QueryEmail_none), arg0)
+}
+
+// QueryToken mocks base method.
+func (m *MockUserRepository) QueryToken(arg0 string) (*domain.ForgotUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryToken", arg0)
+	ret0, _ := ret[0].(*domain.ForgotUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryToken indicates an expected call of QueryToken.
+func (mr *MockUserRepositoryMockRecorder) QueryToken(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryToken", reflect.TypeOf((*MockUserRepository)(nil).QueryToken), arg0)
 }
 
 // ReadID mocks base method.
@@ -108,6 +138,66 @@ func (mr *MockUserRepositoryMockRecorder) RegisterAccoount(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterAccoount", reflect.TypeOf((*MockUserRepository)(nil).RegisterAccoount), arg0)
 }
 
+// ResetAccount mocks base method.
+func (m *MockUserRepository) ResetAccount(arg0, arg1 string) (*domain.ForgotUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ResetAccount", arg0, arg1)
+	ret0, _ := ret[0].(*domain.ForgotUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ResetAccount indicates an expected call of ResetAccount.
+func (mr *MockUserRepositoryMockRecorder) ResetAccount(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResetAccount", reflect.TypeOf((*MockUserRepository)(nil).ResetAccount), arg0, arg1)
+}
+
+// Sendmail mocks base method.
+func (m *MockUserRepository) Sendmail(config *domain.Mails, param *domain.RstmailPara) (*rest.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Sendmail", config, param)
+	ret0, _ := ret[0].(*rest.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Sendmail indicates an expected call of Sendmail.
+func (mr *MockUserRepositoryMockRecorder) Sendmail(config, param interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sendmail", reflect.TypeOf((*MockUserRepository)(nil).Sendmail), config, param)
+}
+
+// Sendmail_Cnt mocks base method.
+func (m *MockUserRepository) Sendmail_Cnt(config *domain.Mails, param *domain.CntmailPara) (*rest.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Sendmail_Cnt", config, param)
+	ret0, _ := ret[0].(*rest.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Sendmail_Cnt indicates an expected call of Sendmail_Cnt.
+func (mr *MockUserRepositoryMockRecorder) Sendmail_Cnt(config, param interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sendmail_Cnt", reflect.TypeOf((*MockUserRepository)(nil).Sendmail_Cnt), config, param)
+}
+
+// UpdateAccoount mocks base method.
+func (m *MockUserRepository) UpdateAccoount(arg0 *domain.SignUser, arg1 string) (*domain.SignUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateAccoount", arg0, arg1)
+	ret0, _ := ret[0].(*domain.SignUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateAccoount indicates an expected call of UpdateAccoount.
+func (mr *MockUserRepositoryMockRecorder) UpdateAccoount(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAccoount", reflect.TypeOf((*MockUserRepository)(nil).UpdateAccoount), arg0, arg1)
+}
+
 // MockUserInputPort is a mock of UserInputPort interface.
 type MockUserInputPort struct {
 	ctrl     *gomock.Controller
@@ -131,6 +221,18 @@ func (m *MockUserInputPort) EXPECT() *MockUserInputPortMockRecorder {
 	return m.recorder
 }
 
+// Contact mocks base method.
+func (m *MockUserInputPort) Contact(arg0 *gin.Context, arg1 *domain.CntmailPara) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Contact", arg0, arg1)
+}
+
+// Contact indicates an expected call of Contact.
+func (mr *MockUserInputPortMockRecorder) Contact(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Contact", reflect.TypeOf((*MockUserInputPort)(nil).Contact), arg0, arg1)
+}
+
 // Delete mocks base method.
 func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 string) {
 	m.ctrl.T.Helper()
@@ -141,6 +243,18 @@ func (m *MockUserInputPort) Delete(arg0 *gin.Context, arg1 string) {
 func (mr *MockUserInputPortMockRecorder) Delete(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserInputPort)(nil).Delete), arg0, arg1)
+}
+
+// Forgot mocks base method.
+func (m *MockUserInputPort) Forgot(arg0 *gin.Context, arg1 string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Forgot", arg0, arg1)
+}
+
+// Forgot indicates an expected call of Forgot.
+func (mr *MockUserInputPortMockRecorder) Forgot(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Forgot", reflect.TypeOf((*MockUserInputPort)(nil).Forgot), arg0, arg1)
 }
 
 // Login mocks base method.
@@ -165,6 +279,18 @@ func (m *MockUserInputPort) Logout(arg0 *gin.Context) {
 func (mr *MockUserInputPortMockRecorder) Logout(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logout", reflect.TypeOf((*MockUserInputPort)(nil).Logout), arg0)
+}
+
+// Reset mocks base method.
+func (m *MockUserInputPort) Reset(arg0 *gin.Context, arg1 *domain.ResetUser) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Reset", arg0, arg1)
+}
+
+// Reset indicates an expected call of Reset.
+func (mr *MockUserInputPortMockRecorder) Reset(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reset", reflect.TypeOf((*MockUserInputPort)(nil).Reset), arg0, arg1)
 }
 
 // Sign mocks base method.

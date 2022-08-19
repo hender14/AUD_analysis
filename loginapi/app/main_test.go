@@ -142,37 +142,39 @@ func TestLogout(t *testing.T) {
 	// println(w.Body.String())
 }
 
-// func TestForgot(t *testing.T) {
-// 	router := setupRouter()
-// 	input := TForgotuser{os.Getenv("TESTUSER_EMAIL")}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestForgot(t *testing.T) {
+	// router := setupRouter()
+	router := testSetting()
+	input := TForgotuser{os.Getenv("TESTUSER_EMAIL")}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("POST", "/app/forgot", body)
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/forgot", body)
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	err := json.Unmarshal(w.Body.Bytes(), &token)
-// 	assert.Equal(t, nil, err)
-// 	// println(token.Token)
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	err := json.Unmarshal(w.Body.Bytes(), &token)
+	assert.Equal(t, nil, err)
+	// println(token.Token)
+}
 
-// func TestReset(t *testing.T) {
-// 	router := setupRouter()
-// 	input := TResetuser{token.Token, os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestReset(t *testing.T) {
+	// router := setupRouter()
+	router := testSetting()
+	input := TResetuser{token.Token, os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("POST", "/app/reset", body)
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/reset", body)
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	// println(w.Body.String())
+}
 
 func TestDelete(t *testing.T) {
 	// router := setupRouter()
@@ -197,17 +199,18 @@ func TestDelete(t *testing.T) {
 	// println(w.Body.String())
 }
 
-// func TestContact(t *testing.T) {
-// 	router := setupRouter()
-// 	input := Cntmail{os.Getenv("TESTMAIL_ID"), os.Getenv("TESTMAIL_TITLE"), os.Getenv("TESTMAIL_CONTENT"), os.Getenv("TESTMAIL_EMAIL")}
-// 	input_json, _ := json.Marshal(input)
-// 	body := strings.NewReader(string(input_json))
+func TestContact(t *testing.T) {
+	// router := setupRouter()
+	router := testSetting()
+	input := Cntmail{os.Getenv("TESTMAIL_ID"), os.Getenv("TESTMAIL_TITLE"), os.Getenv("TESTMAIL_CONTENT"), os.Getenv("TESTMAIL_EMAIL")}
+	input_json, _ := json.Marshal(input)
+	body := strings.NewReader(string(input_json))
 
-// 	w := httptest.NewRecorder()
-// 	req, _ := http.NewRequest("POST", "/app/contact", body)
-// 	router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/app/contact", body)
+	router.ServeHTTP(w, req)
 
-// 	assert.Equal(t, 200, w.Code)
-// 	assert.NotEqual(t, nil, w.Body.String())
-// 	// println(w.Body.String())
-// }
+	assert.Equal(t, 200, w.Code)
+	assert.NotEqual(t, nil, w.Body.String())
+	// println(w.Body.String())
+}

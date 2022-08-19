@@ -45,12 +45,12 @@ func TestQueryEmail(t *testing.T) {
 	expected := input
 
 	// res, err := d.Sign(input)
-	_, err := d.QueryEmail(expected.Email)
+	_, err := d.QueryEmail_none(expected.Email)
 	if err != nil {
 		t.Fatal("Register error!", err)
 	}
 
-	_, err = d_f.QueryEmail(expected.Email)
+	_, err = d_f.QueryEmail_none(expected.Email)
 	if err == nil {
 		t.Fatal("Register error!", err)
 	}

@@ -9,7 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/hender14/app/domain"
-	// gateway "github.com/hender14/app/interfaces/gateway"
+	rest "github.com/sendgrid/rest"
 )
 
 // MockCRUD is a mock of CRUD interface.
@@ -49,6 +49,21 @@ func (mr *MockCRUDMockRecorder) Fscreate(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fscreate", reflect.TypeOf((*MockCRUD)(nil).Fscreate), arg0)
 }
 
+// Fscreate_rst mocks base method.
+func (m *MockCRUD) Fscreate_rst(arg0 *domain.ForgotUser) (*domain.ForgotUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Fscreate_rst", arg0)
+	ret0, _ := ret[0].(*domain.ForgotUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Fscreate_rst indicates an expected call of Fscreate_rst.
+func (mr *MockCRUDMockRecorder) Fscreate_rst(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fscreate_rst", reflect.TypeOf((*MockCRUD)(nil).Fscreate_rst), arg0)
+}
+
 // Fsdelete mocks base method.
 func (m *MockCRUD) Fsdelete(arg0 *domain.SignUser) error {
 	m.ctrl.T.Helper()
@@ -61,6 +76,20 @@ func (m *MockCRUD) Fsdelete(arg0 *domain.SignUser) error {
 func (mr *MockCRUDMockRecorder) Fsdelete(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsdelete", reflect.TypeOf((*MockCRUD)(nil).Fsdelete), arg0)
+}
+
+// Fsdelete_rst mocks base method.
+func (m *MockCRUD) Fsdelete_rst(arg0 *domain.ForgotUser) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Fsdelete_rst", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Fsdelete_rst indicates an expected call of Fsdelete_rst.
+func (mr *MockCRUDMockRecorder) Fsdelete_rst(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsdelete_rst", reflect.TypeOf((*MockCRUD)(nil).Fsdelete_rst), arg0)
 }
 
 // Fsquery mocks base method.
@@ -78,6 +107,21 @@ func (mr *MockCRUDMockRecorder) Fsquery(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsquery", reflect.TypeOf((*MockCRUD)(nil).Fsquery), arg0)
 }
 
+// Fsquery_rst mocks base method.
+func (m *MockCRUD) Fsquery_rst(arg0 *Fsqparam) ([]domain.ForgotUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Fsquery_rst", arg0)
+	ret0, _ := ret[0].([]domain.ForgotUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Fsquery_rst indicates an expected call of Fsquery_rst.
+func (mr *MockCRUDMockRecorder) Fsquery_rst(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsquery_rst", reflect.TypeOf((*MockCRUD)(nil).Fsquery_rst), arg0)
+}
+
 // Fsread mocks base method.
 func (m *MockCRUD) Fsread(arg0 string) (*domain.SignUser, error) {
 	m.ctrl.T.Helper()
@@ -91,4 +135,56 @@ func (m *MockCRUD) Fsread(arg0 string) (*domain.SignUser, error) {
 func (mr *MockCRUDMockRecorder) Fsread(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsread", reflect.TypeOf((*MockCRUD)(nil).Fsread), arg0)
+}
+
+// Fsupdate mocks base method.
+func (m *MockCRUD) Fsupdate(arg0 *domain.SignUser) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Fsupdate", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Fsupdate indicates an expected call of Fsupdate.
+func (mr *MockCRUDMockRecorder) Fsupdate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsupdate", reflect.TypeOf((*MockCRUD)(nil).Fsupdate), arg0)
+}
+
+// MockMAIL is a mock of MAIL interface.
+type MockMAIL struct {
+	ctrl     *gomock.Controller
+	recorder *MockMAILMockRecorder
+}
+
+// MockMAILMockRecorder is the mock recorder for MockMAIL.
+type MockMAILMockRecorder struct {
+	mock *MockMAIL
+}
+
+// NewMockMAIL creates a new mock instance.
+func NewMockMAIL(ctrl *gomock.Controller) *MockMAIL {
+	mock := &MockMAIL{ctrl: ctrl}
+	mock.recorder = &MockMAILMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMAIL) EXPECT() *MockMAILMockRecorder {
+	return m.recorder
+}
+
+// Reqconf mocks base method.
+func (m *MockMAIL) Reqconf(arg0 []byte) (*rest.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Reqconf", arg0)
+	ret0, _ := ret[0].(*rest.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Reqconf indicates an expected call of Reqconf.
+func (mr *MockMAILMockRecorder) Reqconf(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reqconf", reflect.TypeOf((*MockMAIL)(nil).Reqconf), arg0)
 }

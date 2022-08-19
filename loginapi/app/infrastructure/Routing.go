@@ -3,7 +3,6 @@ package infrastructure
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/hender14/app/controller"
 	"github.com/hender14/app/interfaces/controllers"
 	"github.com/hender14/app/interfaces/gateway"
 	"github.com/hender14/app/interfaces/presenter"
@@ -12,6 +11,7 @@ import (
 
 type Routing struct {
 	Fsc  *Fscontext
+	Conf *Sgconfig
 	Gin  *gin.Engine
 	Port string
 }
@@ -19,6 +19,7 @@ type Routing struct {
 func NewRouting(f *Fscontext) *Routing {
 	r := &Routing{
 		Fsc:  f,
+		Conf: rstNewRequest(),
 		Gin:  gin.Default(),
 		Port: setPort(),
 	}
@@ -39,6 +40,7 @@ func (r *Routing) setRouting() {
 		InputFactory:  interactor.NewUserInputPort,
 		RepoFactory:   gateway.NewUserRepository,
 		Conn:          r.Fsc,
+		Config:        r.Conf,
 	}
 	// user registration
 	r.Gin.POST("/register", func(c *gin.Context) { usersController.Sign(c) })
@@ -49,10 +51,12 @@ func (r *Routing) setRouting() {
 	// get user info
 	r.Gin.GET("/app/user", func(c *gin.Context) { usersController.User(c) })
 	// reset user info
-	r.Gin.POST("/app/forgot", controller.Forgot)
-	r.Gin.POST("/app/reset", controller.Reset)
+	r.Gin.POST("/app/forgot", func(c *gin.Context) { usersController.Forgot(c) })
+	r.Gin.POST("/app/reset", func(c *gin.Context) { usersController.Reset(c) })
 	// delete user info
 	r.Gin.GET("/app/delete", func(c *gin.Context) { usersController.Delete(c) })
+	// contact from user
+	r.Gin.POST("/app/contact", func(c *gin.Context) { usersController.Contact(c) })
 }
 
 func (r *Routing) Run() {
