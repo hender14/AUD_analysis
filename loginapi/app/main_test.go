@@ -2,12 +2,16 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
 
+	"github.com/hender14/app/infrastructure"
+
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 )
 
@@ -58,14 +62,23 @@ var jwttoken LJwttoken
 var token RToken
 var user Tdeleteuser
 
+func testSetting() *gin.Engine {
+	fs, err := infrastructure.NewDB()
+	if err != nil {
+		log.Fatalf("Listen and serve failed. %s\n", err)
+	}
+	r := infrastructure.NewRouting(fs)
+	return r.Gin
+}
+
 func TestSign(t *testing.T) {
-	router := setupRouter()
+	router := testSetting()
 	input := Tsignuser{os.Getenv("TESTUSER_FIRSTNAME"), os.Getenv("TESTUSER_LASTNAME"), os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/register", body)
+	req, _ := http.NewRequest("POST", "/register", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -74,7 +87,8 @@ func TestSign(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	router := setupRouter()
+	// router := setupRouter()
+	router := testSetting()
 	input := Tloginuser{os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
@@ -91,8 +105,8 @@ func TestLogin(t *testing.T) {
 }
 
 func TestUser(t *testing.T) {
-	router := setupRouter()
-
+	// router := setupRouter()
+	router := testSetting()
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/app/user", nil)
 	// Cookie
@@ -110,8 +124,8 @@ func TestUser(t *testing.T) {
 }
 
 func TestLogout(t *testing.T) {
-	router := setupRouter()
-
+	// router := setupRouter()
+	router := testSetting()
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/app/logout", nil)
 	// Cookie
@@ -129,7 +143,8 @@ func TestLogout(t *testing.T) {
 }
 
 func TestForgot(t *testing.T) {
-	router := setupRouter()
+	// router := setupRouter()
+	router := testSetting()
 	input := TForgotuser{os.Getenv("TESTUSER_EMAIL")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
@@ -146,7 +161,8 @@ func TestForgot(t *testing.T) {
 }
 
 func TestReset(t *testing.T) {
-	router := setupRouter()
+	// router := setupRouter()
+	router := testSetting()
 	input := TResetuser{token.Token, os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
@@ -161,7 +177,8 @@ func TestReset(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	router := setupRouter()
+	// router := setupRouter()
+	router := testSetting()
 	input := Tdeleteuser{user.ID}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
@@ -183,7 +200,8 @@ func TestDelete(t *testing.T) {
 }
 
 func TestContact(t *testing.T) {
-	router := setupRouter()
+	// router := setupRouter()
+	router := testSetting()
 	input := Cntmail{os.Getenv("TESTMAIL_ID"), os.Getenv("TESTMAIL_TITLE"), os.Getenv("TESTMAIL_CONTENT"), os.Getenv("TESTMAIL_EMAIL")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
