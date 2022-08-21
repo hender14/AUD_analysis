@@ -136,7 +136,7 @@ terraform destroy
 ### deploy environment
 * Google App Engine (Google PaaS service)
 
-### DFD structure
+### Data Flow structure
 under creating
 
 ### Directry figure
@@ -150,9 +150,9 @@ under creating
 
 * ### Architecture concept
 
-login機能は処理速度が要求される事から、go言語を採用。
+login機能は処理速度が要求される事から、golang言語を採用。
 
-また、保守性の観点から、ルーティング(API)層、コントローラ層(主なロジック)、他APIサービス、ライブラリへのアクセス層と層別する事で、Deploy環境の変更等の変化にも対応できるように構成している。従来のMVC設計を参考にmodel層も作成する事で保守性を上げている。
+また、保守性の観点から、Clean Archtectureを採用。「外側のレイヤは内側のレイヤだけに依存する」というルールを守ることによって，アプリケーションから技術を分離して、DB等の外部interfaceの変更を容易にできる。またモックによるテスト実装も容易になるメリットもある。
 
 ### skill
 * gin framework (golang)
@@ -160,10 +160,10 @@ login機能は処理速度が要求される事から、go言語を採用。
 ### deploy environment
 * Google Cloud Run (Google container managed service)
 
-### DFD figure
+### Data FLow figure
 
-![](static/DFD/Login-Forgot.svg)
-![](static/DFD/Login-Auth.svg)
+![](static/DF/Login-Forgot.svg)
+![](static/DF/Login-Auth.svg)
 *user: email, name, password, time, ID items
 
 ### Component structure
@@ -180,7 +180,7 @@ login機能は処理速度が要求される事から、go言語を採用。
 
 ### Architecture concept
 
-keyword算出機能は、多種のAPIの利用およびデータ加工、演算処理が要求される事から、Python言語を採用。
+keyword算出機能は、多種のAPIの利用およびデータ加工、演算処理が要求される事から、上記ライブラリの豊富なPython言語を採用。
 
 また、保守性の観点から、ルーティング(API)層、コントローラ層(主なロジック)、他APIサービス、ライブラリへのアクセス層と層別する事で、Deploy環境の変更等の変化にも対応できるように構成している。今後、オブジェクト指向のコードへ修正予定。
 
@@ -190,8 +190,8 @@ keyword算出機能は、多種のAPIの利用およびデータ加工、演算�
 ### deploy environment
 * Google Cloud Run (Google container managed service)
 
-### DFD figure
-![](static/DFD/keyword.svg)
+### Data Flow figure
+![](static/DF/keyword.svg)
 
 ### Component structure
 ![](static/Component/keyword.svg)
