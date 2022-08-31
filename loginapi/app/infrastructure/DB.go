@@ -1,55 +1,34 @@
 package infrastructure
 
 import (
-	"context"
-	"encoding/base64"
-	"fmt"
 	"os"
 
-	firebase "firebase.google.com/go"
-	"github.com/jschoedt/go-firestorm"
-	"google.golang.org/api/option"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/guregu/dynamo"
 )
 
-type Fscontext struct {
-	Ctx context.Context
-	Fsc *firestorm.FSClient
+type Awscontext struct {
+	Db *dynamo.DB
 }
 
-func NewDB() (*Fscontext, error) {
-	f := new(Fscontext)
-	err := f.NoSqlconnect()
+func NewDB() (*Awscontext, error) {
+	a := new(Awscontext)
+	err := a.NoSqlconnect()
 	if err != nil {
 		return nil, err
 	}
-	return f, err
+	return a, err
 }
 
-func (f *Fscontext) NoSqlconnect() error {
+func (a *Awscontext) NoSqlconnect() error {
 	// firestormの初期化
-	f.Ctx = context.Background()
-	keyfile := Loadenv()
-	sa := option.WithCredentialsJSON(keyfile)
-	conf := &firebase.Config{ProjectID: os.Getenv("GCP_PROJECT_ID")}
-	app, err := firebase.NewApp(f.Ctx, conf, sa)
-	if err != nil {
-		fmt.Printf("firebase auth has problem:%s\n", err)
-		return err
-	}
-	client, err := app.Firestore(f.Ctx)
-	if err != nil {
-		fmt.Printf("firestore auth has problem: %s\n", err)
-		return err
-	}
-	f.Fsc = firestorm.New(client, "ID", "")
-	return err
-}
+	cred := credentials.NewStaticCredentials(os.Getenv("AWS_ACCESS_ID"), os.Getenv("AWS_ACCESS_KEY"), "") // 最後の引数は[セッショントークン]
+	a.Db = dynamo.New(session.New(), &aws.Config{
+		Credentials: cred,
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+	})
 
-func Loadenv() []byte {
-	// sEnc := base64.StdEncoding.EncodeToString([]byte(JSON))
-	// fmt.Println(sEnc)
-	sEnc := os.Getenv("GCP_KEYFILE_JSON")
-	sDec, _ := base64.StdEncoding.DecodeString(sEnc)
-
-	return sDec
+	return nil
 }

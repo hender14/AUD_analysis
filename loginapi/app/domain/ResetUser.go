@@ -5,9 +5,9 @@ import (
 )
 
 type ForgotUser struct {
-	ID    string    `json:"id"`
-	Email string    `json:"email"`
-	Token string    `json:"token"`
+	ID    string    `dynamo:"id"`
+	Email string    `dynamo:"email"`
+	Token string    `dynamo:"token"`
 	Year  time.Time `json:"year"`
 }
 

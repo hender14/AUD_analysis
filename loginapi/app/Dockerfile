@@ -9,7 +9,7 @@ WORKDIR /go/src/app
 COPY . ./
 
 # pkg更新の際は-uｵﾌﾟｼｮﾝを追加
-RUN go get github.com/gin-gonic/gin@v1.7.7 \
+RUN go get github.com/gin-gonic/gin@v1.8.1 \
 # && go get cloud.google.com/go/firestore@1.6.1 \
 && go get cloud.google.com/go/storage@v1.21.0 \
 && go get firebase.google.com/go@v3.13.0+incompatible \
@@ -27,7 +27,9 @@ RUN go get github.com/gin-gonic/gin@v1.7.7 \
 && go get google.golang.org/api@v0.69.0 \
 && go get gopkg.in/yaml.v2@v2.4.0 \
 && go get	github.com/sendgrid/sendgrid-go \
-&& go get	github.com/sendgrid/rest
+&& go get	github.com/sendgrid/rest \
+&& go get	github.com/guregu/dynamo@v1.16.0 \
+&& go get	github.com/aws/aws-sdk-go v1.44.86
 
 # RUN apk add build-base
 RUN apk add --no-cache gcc

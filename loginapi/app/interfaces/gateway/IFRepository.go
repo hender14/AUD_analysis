@@ -6,14 +6,14 @@ import (
 )
 
 type CRUD interface {
-	Fscreate(*domain.SignUser) error
-	Fsquery(*Fsqparam) ([]domain.SignUser, error)
-	Fsquery_rst(*Fsqparam) ([]domain.ForgotUser, error)
-	Fsread(string) (*domain.SignUser, error)
-	Fsdelete(*domain.SignUser) error
-	Fsdelete_rst(*domain.ForgotUser) error
-	Fscreate_rst(*domain.ForgotUser) (*domain.ForgotUser, error)
-	Fsupdate(*domain.SignUser) error
+	Awscreate(*domain.SignUser) error
+	Awsquery(*Fsqparam) ([]domain.SignUser, error)
+	Awsquery_rst(*Fsqparam) ([]domain.ForgotUser, error)
+	Awsread(string) (*domain.SignUser, error)
+	Awsdelete(*domain.SignUser) error
+	Awsdelete_rst(*domain.ForgotUser) error
+	Awscreate_rst(*domain.ForgotUser) (*domain.ForgotUser, error)
+	Awsupdate(*domain.SignUser) error
 }
 
 type MAIL interface {

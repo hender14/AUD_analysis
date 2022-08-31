@@ -7,8 +7,9 @@ services:
     image: loginapi
     container_name: loginapi
     environment:
-      GCP_KEYFILE_JSON: ${GCP_KEYFILE_JSON}
-      GCP_PROJECT_ID: ${GCP_PROJECT_ID}
+      AWS_ACCESS_ID: ${AWS_ACCESS_ID}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
       CORS_ADDRESS: ${CORS_ADDRESS}
       SENDGRID_API_KEY: ${SENDGRID_API_KEY}
       SENDGRID_RST_TEMPLATED_ID: ${SENDGRID_RST_TEMPLATED_ID}

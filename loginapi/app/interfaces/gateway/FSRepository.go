@@ -29,8 +29,8 @@ func NewUserRepository(c CRUD, s MAIL) port.UserRepository {
 }
 
 func (repo *UserRepository) QueryEmail_none(email string) (account *domain.SignUser, err error) {
-	qparam := &Fsqparam{Collection: "SignUser", Key: "email", Condition: "==", Value: email}
-	qrfield, err := repo.context.Fsquery(qparam)
+	qparam := &Fsqparam{Collection: "SignUser", Key: "email", Condition: "=", Value: email}
+	qrfield, err := repo.context.Awsquery(qparam)
 	if err != nil {
 		return account, err
 	}
@@ -43,8 +43,8 @@ func (repo *UserRepository) QueryEmail_none(email string) (account *domain.SignU
 }
 
 func (repo *UserRepository) QueryEmail(email string) (account *domain.SignUser, err error) {
-	qparam := &Fsqparam{Collection: "SignUser", Key: "email", Condition: "==", Value: email}
-	qrfield, err := repo.context.Fsquery(qparam)
+	qparam := &Fsqparam{Collection: "SignUser", Key: "email", Condition: "=", Value: email}
+	qrfield, err := repo.context.Awsquery(qparam)
 	if err != nil {
 		return account, err
 	}
@@ -64,7 +64,7 @@ func (repo *UserRepository) QueryEmail(email string) (account *domain.SignUser, 
 }
 
 func (repo *UserRepository) RegisterAccoount(s *domain.SignUser) error {
-	err := repo.context.Fscreate(s)
+	err := repo.context.Awscreate(s)
 	if err != nil {
 		fmt.Printf("create result: %s/n", s)
 		fmt.Printf("err result: %s/n", err)
@@ -75,7 +75,7 @@ func (repo *UserRepository) RegisterAccoount(s *domain.SignUser) error {
 }
 
 func (repo *UserRepository) ReadID(id string) (*domain.SignUser, error) {
-	account, err := repo.context.Fsread(id)
+	account, err := repo.context.Awsread(id)
 	if err != nil {
 		fmt.Printf("query result: %s/n", account)
 		fmt.Printf("query err result: %s/n", err)
@@ -90,7 +90,7 @@ func (repo *UserRepository) ReadID(id string) (*domain.SignUser, error) {
 }
 
 func (repo *UserRepository) DeleteAccount(d *domain.SignUser) error {
-	err := repo.context.Fsdelete(d)
+	err := repo.context.Awsdelete(d)
 	if err != nil {
 		return err
 	}
@@ -103,7 +103,7 @@ func (repo *UserRepository) ResetAccount(email string, token string) (*domain.Fo
 	f.Token = token
 	f.Year = time.Now()
 
-	f, err := repo.context.Fscreate_rst(f)
+	f, err := repo.context.Awscreate_rst(f)
 	if err != nil {
 		fmt.Printf("create result: %s/n", f)
 		fmt.Printf("err result: %s/n", err)
@@ -113,8 +113,8 @@ func (repo *UserRepository) ResetAccount(email string, token string) (*domain.Fo
 }
 
 func (repo *UserRepository) QueryToken(token string) (account *domain.ForgotUser, err error) {
-	qparam := &Fsqparam{Collection: "ForgotUser", Key: "token", Condition: "==", Value: token}
-	qrfield, err := repo.context.Fsquery_rst(qparam)
+	qparam := &Fsqparam{Collection: "ForgotUser", Key: "token", Condition: "=", Value: token}
+	qrfield, err := repo.context.Awsquery_rst(qparam)
 	if err != nil {
 		return account, err
 	}
@@ -138,7 +138,7 @@ func (repo *UserRepository) UpdateAccoount(account *domain.SignUser, password st
 	account.Password = passwordb
 	account.Year = time.Now()
 
-	err = repo.context.Fsupdate(account)
+	err = repo.context.Awsupdate(account)
 	if err != nil {
 		fmt.Printf("update result: %s/n", account)
 		fmt.Printf("err result: %s/n", err)
@@ -148,7 +148,7 @@ func (repo *UserRepository) UpdateAccoount(account *domain.SignUser, password st
 }
 
 func (repo *UserRepository) DeleteAccoount(account *domain.ForgotUser) (err error) {
-	err = repo.context.Fsdelete_rst(account)
+	err = repo.context.Awsdelete_rst(account)
 	if err != nil {
 		return err
 	}

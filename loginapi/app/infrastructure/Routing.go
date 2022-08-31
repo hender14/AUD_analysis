@@ -10,15 +10,15 @@ import (
 )
 
 type Routing struct {
-	Fsc  *Fscontext
+	Awsc *Awscontext
 	Conf *Sgconfig
 	Gin  *gin.Engine
 	Port string
 }
 
-func NewRouting(f *Fscontext) *Routing {
+func NewRouting(a *Awscontext) *Routing {
 	r := &Routing{
-		Fsc:  f,
+		Awsc: a,
 		Conf: rstNewRequest(),
 		Gin:  gin.Default(),
 		Port: setPort(),
@@ -39,7 +39,7 @@ func (r *Routing) setRouting() {
 		OutputFactory: presenter.NewUserOutputPort,
 		InputFactory:  interactor.NewUserInputPort,
 		RepoFactory:   gateway.NewUserRepository,
-		Conn:          r.Fsc,
+		Conn:          r.Awsc,
 		Config:        r.Conf,
 	}
 	// user registration
