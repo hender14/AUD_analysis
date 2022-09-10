@@ -3,7 +3,8 @@ name: CI to GCP on loginapi
 on:
   push:
     paths:
-    - 'loginapi/**'
+    # - 'loginapi/**'
+    - '*'
     # branches: [ 'devlop' ]
     branches: [ 'feature/**' ]
 env:
@@ -61,8 +62,7 @@ jobs:
         if: ${{ github.event.workflow_run.conclusion != 'failure' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }}
         run: |
-            docker build -t ${{ env.IMAGE }} .
-            docker push ${{ env.IMAGE }}
+            docker build -t ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }} .
+            docker push ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }}
         working-directory: ./loginapi/app
