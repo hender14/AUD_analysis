@@ -27,7 +27,6 @@ RUN go get github.com/gin-gonic/gin@v1.8.1 \
 # RUN apk add build-base
 RUN apk add --no-cache gcc
 RUN apk add --no-cache musl-dev
-# RUN go get github.com/joho/godotenv
 RUN go get github.com/go-playground/assert/v2
 
 EXPOSE 8080

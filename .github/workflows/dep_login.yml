@@ -3,8 +3,7 @@ name: CI to GCP on loginapi
 on:
   push:
     paths:
-    # - 'loginapi/**'
-    - '*'
+    - 'loginapi/**'
     # branches: [ 'devlop' ]
     branches: [ 'feature/**' ]
 env:

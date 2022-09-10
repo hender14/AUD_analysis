@@ -3,8 +3,7 @@ name: CI to GCP on keywordapi
 on:
   push:
     paths:
-    # - 'keywordapi/**'
-    - '*'
+    - 'keywordapi/**'
     # branches: [ 'devlop' ]
     branches: [ 'feature/**' ]
 env:
