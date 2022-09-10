@@ -26,7 +26,7 @@
               </tr>
               <tr>
                 <th scope="row">Email</th>
-                <td>{{ items.email }}</td>
+                <td>{{ items.Email }}</td>
               </tr>
             </tbody>
           </table>

@@ -9,7 +9,7 @@ services:
     volumes:
       - ./Frontend/ui:/app
     environment:
-      VUE_APP_USERURL: http://localhost:8082/app/
+      VUE_APP_USERURL: http://localhost:8082/
       VUE_APP_ANALYSISURL: http://localhost:8081/
     command: npm run serve
 

@@ -80,16 +80,18 @@ export default {
 
     const upload = async () => {
       try {
-        // let config = {
-        // headers: {
-        //   'content-type': 'multipart/form-data',
-        //   // 'Access-Control-Allow-Origin': 'http://localhost'
-        //   }
-        // };
-        const filename = await uploadfile(file, user, name)
-        axios.post( analysisURL + 'analysis', {
-          username: user,
-          filename: filename
+        // parameter の用意
+        const time = new Date().getTime().toString();
+        const filename = time+'-'+name
+        const params = new FormData();
+        params.append("file", file);
+        params.append("username", user);
+        params.append("filename", filename);
+        axios.post( analysisURL + 'analysis', params, {
+          headers: {
+            // multipartで送信
+            'content-type': 'multipart/form-data',
+          },
         }).then(res => {
           console.log(res)
         // alert("「" + res['name'] + "」登録完了");
@@ -110,7 +112,7 @@ export default {
     onMounted(async () => {
       try {
         const { data } = await axios.get( userURL+ 'user')
-        user = data.id
+        user = data.ID
         // actionsに設定したパラメータ名を設定
         await store.dispatch('setAuth', true)
       } catch(e) {

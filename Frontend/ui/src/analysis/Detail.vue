@@ -83,13 +83,13 @@ export default {
       cls: '',
       message: ''
     })
-    // console.log(buffer["messag"])
     // const filename = toRefs(props)
     // const { messag } = toRef(props)
-    if (localStorage.getItem('filename') != 'None') {
-      filename = localStorage.getItem('filename')
-    }
-    localStorage.setItem('filename', filename)
+    // console.log(localStorage.getItem('filename'))
+    // if (localStorage.getItem('filename') != 'None') {
+    //   filename = localStorage.getItem('filename')
+    // }
+    // localStorage.setItem('filename', filename)
     const message = ref('You are not logged in!')
     const items = ref('')
     const keylist = reactive({
@@ -103,20 +103,19 @@ export default {
     onMounted(async () => {
       try {
         const { data } = await axios.get( userURL + 'user' )
-        user = data.id
+        user = data.ID
         // actionsに設定したパラメータ名を設定
         await store.dispatch('setAuth', true)
       } catch(e) {
         await store.dispatch('setAuth', false)
         router.push('/login')
       }
-
       try {
         await axios.get( analysisURL + 'detail', { params: {
           username: user,
           filename: filename
         }}).then(res => {
-          // console.log(res['data'])
+          console.log(res['data'])
           message.value = `get completed`
           items.value = res['data']
           keylist.word1 = res['data']['key000']['keyword']

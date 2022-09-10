@@ -4,7 +4,8 @@ on:
   push:
     paths:
     - 'keywordapi/**'
-    branches: [ 'devlop' ]
+    # branches: [ 'devlop' ]
+    branches: [ 'feature/**' ]
 env:
   TEST_NAME: apptest
   TAG: 1.0.2
@@ -16,14 +17,17 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
-      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
-      GCP_STORAGE_BUCKET: ${{ secrets.GCP_STORAGE_BUCKET }}
-      GCP_TRANSLATE_FOLDER: ${{ secrets.GCP_TRANSLATE_FOLDER }}
-      GCP_COMPLEHEND_FOLDER: ${{ secrets.GCP_COMPLEHEND_FOLDER }}
-      GCP_ENTITIES_FOLDER: ${{ secrets.GCP_ENTITIES_FOLDER }}
-      GCP_ANALYSIS_FOLDER: ${{ secrets.GCP_ANALYSIS_FOLDER }}
+      AWS_STORAGE_BUCKET: ${{ secrets.AWS_STORAGE_BUCKET }}
+      AWS_TRANSLATE_FOLDER: ${{ secrets.AWS_TRANSLATE_FOLDER }}
+      AWS_COMPLEHEND_FOLDER: ${{ secrets.AWS_COMPLEHEND_FOLDER }}
+      AWS_ENTITIES_FOLDER: ${{ secrets.AWS_ENTITIES_FOLDER }}
+      AWS_ANALYSIS_FOLDER: ${{ secrets.AWS_ANALYSIS_FOLDER }}
+      AWS_LAMBDA_LIST: ${{ secrets.AWS_LAMBDA_LIST }}
+      AWS_LAMBDA_DETAIL: ${{ secrets.AWS_LAMBDA_DETAIL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY_KEYWORD }}
       CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
       IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_KEYWORD_SERVICE_NAME }}:${{ github.sha }}
 
@@ -50,17 +54,22 @@ jobs:
           TESTUSER_TRANSLATE_FILENAME: ${{ secrets.TESTUSER_TRANSLATE_FILENAME }}
           TESTUSER_ANALYSIS_FILENAME: ${{ secrets.TESTUSER_ANALYSIS_FILENAME }}
 
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v0'
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          credentials_json: ${{ env.GCP_KEYFILE_JSON }}
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
-      - name: Configure docker to use the gcloud cli
-        run: gcloud auth configure-docker --quiet
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Make fail if the previous workflow was failed
         if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }}
         run: |
             docker build -t ${{ env.IMAGE }} -f docker/app/Dockerfile .
             docker push ${{ env.IMAGE }}

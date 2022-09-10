@@ -4,7 +4,8 @@ on:
   push:
     paths:
     - 'loginapi/**'
-    branches: [ 'feature/**' ]
+    branches: [ 'devlop' ]
+    # branches: [ 'feature/**' ]
 env:
   TEST_NAME: loginapi
 

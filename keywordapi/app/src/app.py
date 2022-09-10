@@ -29,15 +29,17 @@ def after_request(response):
 @app.route('/analysis', methods=["POST"])
 def analysis():
   if request.method == "POST":
-    username = request.json["username"]
-    filename = request.json["filename"]
-    if not (username and filename):
+    file = request.files["file"]
+    username = request.form["username"]
+    filename = request.form["filename"]
+    if not (file and username and filename):
+      print('message: parameter is not enough: {}, {}'.format(username, filename))
       return jsonify({'message': 'parameter is not enough'}), 400
 
   sepa = filename.split(".")
   filenameo = sepa[len(sepa)-2]
   # Transcribe
-  transcribe(username, filename, filenameo)
+  transcribe(file, username, filename, filenameo)
   # Comprehend
   keyword = comprehend(username, filenameo)
   # Analysis
@@ -52,15 +54,15 @@ def list():
   if request.method == "GET":
     username = request.args.get('username', default="", type=str)
     if not (username):
-      return jsonify({'message': 'parameter is not enough'}), 400
+      print('message: parameter is not enough: {}'.format(username))
+      return jsonify({'message': 'parameter is not enough: {}'.format(username)}), 400
 
   # bucket_name = os.environ['GCP_STORAGE_BUCKET']
   # prefix = os.environ['GCP_ANALYSIS_FOLDER'] + "/" + username
   url = os.environ['AWS_LAMBDA_LIST']
   param = {'username':username}
   response = requests.get(url, params=param)
-  print(response.text)
-  return  jsonify(response.text), 200
+  return  response.json(), 200
 
 # youtube解析用APIの解析結果詳細送付
 @app.route('/detail', methods=["GET"])
@@ -69,6 +71,7 @@ def detail():
     username = request.args.get('username', default="", type=str)
     filename = request.args.get('filename', default="", type=str)
     if not (username and filename):
+      print('message: parameter is not enough: {}, {}'.format(username, filename))
       return jsonify({'message': 'parameter is not enough'}), 400
   
   # bucket_name = os.environ['GCP_STORAGE_BUCKET']
@@ -95,8 +98,11 @@ def detail():
 #   gcstorage.delete_blob(bucket_name, filename)
 #   return  jsonify({'message': 'delete is completed'}), 200
 
-def transcribe(username, filename, filenameo):
+def transcribe(file, username, filename, filenameo):
+  s3 = S3()
   # Transcribe Start
+  filepath_transcribe = username + '/' + os.environ['AWS_TRANSLATE_FOLDER'] + '/' + filename
+  s3.Put_object(file, filepath_transcribe)
   transcribe = Transcribe(username, filename)
   transcribe.start_transcription(filenameo)
   transcribe.wait_handler(filenameo)
@@ -113,7 +119,7 @@ def comprehend(username, filenameo):
 
   comprehend = Comprehend()
   phrases = comprehend.detect_key_phrases(transcription)
-  s3.Put_object(phrases, filepath_entities)
+  s3.Put_object_json(phrases, filepath_entities)
   keyword = comprehend.key_phrases_list(phrases)
   print('Comprehend finished')
 
@@ -125,7 +131,7 @@ def analysis(keyword, username, filenameo):
   filepath_analysis = username + '/' + os.environ['AWS_ANALYSIS_FOLDER'] + '/' + filenameo + '.json'
   analysis = Analysis()
   result = analysis.youtube_analysis(keyword)
-  s3.Put_object(result, filepath_analysis)
+  s3.Put_object_json(result, filepath_analysis)
 
   return
 

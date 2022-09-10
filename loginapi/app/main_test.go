@@ -94,7 +94,7 @@ func TestLogin(t *testing.T) {
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/login", body)
+	req, _ := http.NewRequest("POST", "/login", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -108,7 +108,7 @@ func TestUser(t *testing.T) {
 	// router := setupRouter()
 	router := testSetting()
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/user", nil)
+	req, _ := http.NewRequest("GET", "/user", nil)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -127,7 +127,7 @@ func TestLogout(t *testing.T) {
 	// router := setupRouter()
 	router := testSetting()
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/logout", nil)
+	req, _ := http.NewRequest("GET", "/logout", nil)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -150,7 +150,7 @@ func TestForgot(t *testing.T) {
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/forgot", body)
+	req, _ := http.NewRequest("POST", "/forgot", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -168,7 +168,7 @@ func TestReset(t *testing.T) {
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/reset", body)
+	req, _ := http.NewRequest("POST", "/reset", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -184,7 +184,7 @@ func TestDelete(t *testing.T) {
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/delete", body)
+	req, _ := http.NewRequest("GET", "/delete", body)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -207,7 +207,7 @@ func TestContact(t *testing.T) {
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/contact", body)
+	req, _ := http.NewRequest("POST", "/contact", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)

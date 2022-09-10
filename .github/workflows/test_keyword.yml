@@ -4,7 +4,8 @@ on:
   push:
     paths:
     - 'keywordapi/**'
-    branches: [ 'feature/**' ]
+    branches: [ 'devlop' ]
+    # branches: [ 'feature/**' ]
 env:
   TEST_NAME: apptest
 
@@ -15,8 +16,6 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      # GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
       AWS_STORAGE_BUCKET: ${{ secrets.AWS_STORAGE_BUCKET }}
       AWS_TRANSLATE_FOLDER: ${{ secrets.AWS_TRANSLATE_FOLDER }}
       AWS_COMPLEHEND_FOLDER: ${{ secrets.AWS_COMPLEHEND_FOLDER }}

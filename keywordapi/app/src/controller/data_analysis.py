@@ -31,7 +31,6 @@ class Analysis:
         if (len(response_kotlin_buffer[listnum - j]["items"]) == 0):
           listnum -= 1
         index_i = index_list[listnum - j]
-        print(index_i)
         knum = len(response_kotlin_buffer[index_i]["items"])
         for k in range(3):
           yjson["key" + str(i) + str(j) + str(k)] = {"size": {"key": j+1, "play": k+1}, 

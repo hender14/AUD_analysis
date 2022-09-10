@@ -11,7 +11,11 @@ class S3():
     response = self.client.get_object(Bucket=self.bucketname, Key=filepath)
     return response
 
-  def Put_object(self, body, filepath):
+  def Put_object_json(self, body, filepath):
     body_json = json.dumps(body)
     response = self.client.put_object(Bucket=self.bucketname, Body= body_json, Key=filepath)
+    return response
+
+  def Put_object(self, body, filepath):
+    response = self.client.put_object(Bucket=self.bucketname, Body= body, Key=filepath)
     return response
