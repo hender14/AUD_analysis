@@ -1,4 +1,4 @@
-name: Test to GCP on loginapi
+name: Test to AWS on loginapi
 
 on:
   push:
