@@ -46,5 +46,5 @@ jobs:
         env: 
           S3_UPLOAD_BUCKET: ${{ secrets.S3_UPLOAD_BUCKET }}
         run: |
-          aws s3 cp dist/ s3://$S3_UPLOAD_BUCKET/ --quiet
+          aws s3 cp --recursive --region ${{ secrets.AWS_DEFAULT_REGION }}  dist/ s3://$S3_UPLOAD_BUCKET/ --quiet
         working-directory: ./Frontend/ui

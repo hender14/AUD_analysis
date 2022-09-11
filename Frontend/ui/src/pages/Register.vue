@@ -24,8 +24,6 @@
         placeholder="Email"
         required>
         
-      <!-- <div v-if="notify.cls" :class="`alert alert-${notify.cls}`" role="alert"> -->
-      <!-- </div> -->
       <input
         v-model="password"
         type="password"
