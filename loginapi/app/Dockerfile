@@ -22,7 +22,9 @@ RUN go get github.com/gin-gonic/gin@v1.8.1 \
 && go get	github.com/sendgrid/sendgrid-go \
 && go get	github.com/sendgrid/rest \
 && go get	github.com/guregu/dynamo@v1.16.0 \
-&& go get	github.com/aws/aws-sdk-go@v1.44.86
+&& go get	github.com/aws/aws-sdk-go@v1.44.86 \
+&& go get github.com/gin-gonic/gin/binding@v1.7.7 \
+&& go get github.com/golang/mock@v1.6.0
 
 # RUN apk add build-base
 RUN apk add --no-cache gcc
