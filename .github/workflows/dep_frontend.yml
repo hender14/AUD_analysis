@@ -44,7 +44,7 @@ jobs:
       - name: Make fail if the previous workflow was failed
         if: ${{ github.event.workflow_run.conclusion != 'failure' }}
         env: 
-          S3_UPLOAD_BUCKET: ${{ secrets.S3_UPLOAD_BUCKET }}
+          S3_UPLOAD_BUCKET: ${{ secrets.AWS_S3_UPLOAD_BUCKET }}
         run: |
           aws s3 cp --recursive --region ${{ secrets.AWS_DEFAULT_REGION }}  dist/ s3://$S3_UPLOAD_BUCKET/ --quiet
         working-directory: ./Frontend/ui
