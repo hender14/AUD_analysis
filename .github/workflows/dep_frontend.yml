@@ -1,0 +1,50 @@
+name: CI to AWS on Frontend
+
+on:
+  push:
+    paths:
+    - 'Frontend/**'
+    branches: [ 'devlop' ]
+    # branches: [ 'feature/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+        
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./Frontend/ui
+
+      - name: Build
+        env: 
+          VUE_APP_USERURL: ${{ secrets.VUE_APP_USERURL }}
+          VUE_APP_ANALYSISURL: ${{ secrets.VUE_APP_ANALYSISURL }}
+
+        run: npm run build
+        working-directory: ./Frontend/ui
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Make fail if the previous workflow was failed
+        if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+        env: 
+          S3_UPLOAD_BUCKET: ${{ secrets.AWS_S3_UPLOAD_BUCKET }}
+        run: |
+          aws s3 cp --recursive --region ${{ secrets.AWS_DEFAULT_REGION }}  dist/ s3://$S3_UPLOAD_BUCKET/ --quiet
+        working-directory: ./Frontend/ui

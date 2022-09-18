@@ -35,120 +35,120 @@ func (m *MockCRUD) EXPECT() *MockCRUDMockRecorder {
 	return m.recorder
 }
 
-// Fscreate mocks base method.
-func (m *MockCRUD) Fscreate(arg0 *domain.SignUser) error {
+// Awscreate mocks base method.
+func (m *MockCRUD) Awscreate(arg0 *domain.SignUser) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fscreate", arg0)
+	ret := m.ctrl.Call(m, "Awscreate", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Fscreate indicates an expected call of Fscreate.
-func (mr *MockCRUDMockRecorder) Fscreate(arg0 interface{}) *gomock.Call {
+// Awscreate indicates an expected call of Awscreate.
+func (mr *MockCRUDMockRecorder) Awscreate(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fscreate", reflect.TypeOf((*MockCRUD)(nil).Fscreate), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awscreate", reflect.TypeOf((*MockCRUD)(nil).Awscreate), arg0)
 }
 
-// Fscreate_rst mocks base method.
-func (m *MockCRUD) Fscreate_rst(arg0 *domain.ForgotUser) (*domain.ForgotUser, error) {
+// Awscreate_rst mocks base method.
+func (m *MockCRUD) Awscreate_rst(arg0 *domain.ForgotUser) (*domain.ForgotUser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fscreate_rst", arg0)
+	ret := m.ctrl.Call(m, "Awscreate_rst", arg0)
 	ret0, _ := ret[0].(*domain.ForgotUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Fscreate_rst indicates an expected call of Fscreate_rst.
-func (mr *MockCRUDMockRecorder) Fscreate_rst(arg0 interface{}) *gomock.Call {
+// Awscreate_rst indicates an expected call of Awscreate_rst.
+func (mr *MockCRUDMockRecorder) Awscreate_rst(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fscreate_rst", reflect.TypeOf((*MockCRUD)(nil).Fscreate_rst), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awscreate_rst", reflect.TypeOf((*MockCRUD)(nil).Awscreate_rst), arg0)
 }
 
-// Fsdelete mocks base method.
-func (m *MockCRUD) Fsdelete(arg0 *domain.SignUser) error {
+// Awsdelete mocks base method.
+func (m *MockCRUD) Awsdelete(arg0 *domain.SignUser) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsdelete", arg0)
+	ret := m.ctrl.Call(m, "Awsdelete", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Fsdelete indicates an expected call of Fsdelete.
-func (mr *MockCRUDMockRecorder) Fsdelete(arg0 interface{}) *gomock.Call {
+// Awsdelete indicates an expected call of Awsdelete.
+func (mr *MockCRUDMockRecorder) Awsdelete(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsdelete", reflect.TypeOf((*MockCRUD)(nil).Fsdelete), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsdelete", reflect.TypeOf((*MockCRUD)(nil).Awsdelete), arg0)
 }
 
-// Fsdelete_rst mocks base method.
-func (m *MockCRUD) Fsdelete_rst(arg0 *domain.ForgotUser) error {
+// Awsdelete_rst mocks base method.
+func (m *MockCRUD) Awsdelete_rst(arg0 *domain.ForgotUser) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsdelete_rst", arg0)
+	ret := m.ctrl.Call(m, "Awsdelete_rst", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Fsdelete_rst indicates an expected call of Fsdelete_rst.
-func (mr *MockCRUDMockRecorder) Fsdelete_rst(arg0 interface{}) *gomock.Call {
+// Awsdelete_rst indicates an expected call of Awsdelete_rst.
+func (mr *MockCRUDMockRecorder) Awsdelete_rst(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsdelete_rst", reflect.TypeOf((*MockCRUD)(nil).Fsdelete_rst), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsdelete_rst", reflect.TypeOf((*MockCRUD)(nil).Awsdelete_rst), arg0)
 }
 
-// Fsquery mocks base method.
-func (m *MockCRUD) Fsquery(arg0 *Fsqparam) ([]domain.SignUser, error) {
+// Awsquery mocks base method.
+func (m *MockCRUD) Awsquery(arg0 *Fsqparam) ([]domain.SignUser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsquery", arg0)
+	ret := m.ctrl.Call(m, "Awsquery", arg0)
 	ret0, _ := ret[0].([]domain.SignUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Fsquery indicates an expected call of Fsquery.
-func (mr *MockCRUDMockRecorder) Fsquery(arg0 interface{}) *gomock.Call {
+// Awsquery indicates an expected call of Awsquery.
+func (mr *MockCRUDMockRecorder) Awsquery(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsquery", reflect.TypeOf((*MockCRUD)(nil).Fsquery), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsquery", reflect.TypeOf((*MockCRUD)(nil).Awsquery), arg0)
 }
 
-// Fsquery_rst mocks base method.
-func (m *MockCRUD) Fsquery_rst(arg0 *Fsqparam) ([]domain.ForgotUser, error) {
+// Awsquery_rst mocks base method.
+func (m *MockCRUD) Awsquery_rst(arg0 *Fsqparam) ([]domain.ForgotUser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsquery_rst", arg0)
+	ret := m.ctrl.Call(m, "Awsquery_rst", arg0)
 	ret0, _ := ret[0].([]domain.ForgotUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Fsquery_rst indicates an expected call of Fsquery_rst.
-func (mr *MockCRUDMockRecorder) Fsquery_rst(arg0 interface{}) *gomock.Call {
+// Awsquery_rst indicates an expected call of Awsquery_rst.
+func (mr *MockCRUDMockRecorder) Awsquery_rst(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsquery_rst", reflect.TypeOf((*MockCRUD)(nil).Fsquery_rst), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsquery_rst", reflect.TypeOf((*MockCRUD)(nil).Awsquery_rst), arg0)
 }
 
-// Fsread mocks base method.
-func (m *MockCRUD) Fsread(arg0 string) (*domain.SignUser, error) {
+// Awsread mocks base method.
+func (m *MockCRUD) Awsread(arg0 string) (*domain.SignUser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsread", arg0)
+	ret := m.ctrl.Call(m, "Awsread", arg0)
 	ret0, _ := ret[0].(*domain.SignUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Fsread indicates an expected call of Fsread.
-func (mr *MockCRUDMockRecorder) Fsread(arg0 interface{}) *gomock.Call {
+// Awsread indicates an expected call of Awsread.
+func (mr *MockCRUDMockRecorder) Awsread(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsread", reflect.TypeOf((*MockCRUD)(nil).Fsread), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsread", reflect.TypeOf((*MockCRUD)(nil).Awsread), arg0)
 }
 
-// Fsupdate mocks base method.
-func (m *MockCRUD) Fsupdate(arg0 *domain.SignUser) error {
+// Awsupdate mocks base method.
+func (m *MockCRUD) Awsupdate(arg0 *domain.SignUser) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Fsupdate", arg0)
+	ret := m.ctrl.Call(m, "Awsupdate", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Fsupdate indicates an expected call of Fsupdate.
-func (mr *MockCRUDMockRecorder) Fsupdate(arg0 interface{}) *gomock.Call {
+// Awsupdate indicates an expected call of Awsupdate.
+func (mr *MockCRUDMockRecorder) Awsupdate(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fsupdate", reflect.TypeOf((*MockCRUD)(nil).Fsupdate), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Awsupdate", reflect.TypeOf((*MockCRUD)(nil).Awsupdate), arg0)
 }
 
 // MockMAIL is a mock of MAIL interface.

@@ -1,9 +1,10 @@
-name: Test to GCP on keywordapi
+name: Test to AWS on keywordapi
 
 on:
   push:
     paths:
     - 'keywordapi/**'
+    # branches: [ 'devlop' ]
     branches: [ 'feature/**' ]
 env:
   TEST_NAME: apptest
@@ -15,14 +16,16 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_KEYFILE_JSON: ${{ secrets.GCP_KEYFILE_JSON }}
-      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
-      GCP_STORAGE_BUCKET: ${{ secrets.GCP_STORAGE_BUCKET }}
-      GCP_TRANSLATE_FOLDER: ${{ secrets.GCP_TRANSLATE_FOLDER }}
-      GCP_COMPLEHEND_FOLDER: ${{ secrets.GCP_COMPLEHEND_FOLDER }}
-      GCP_ENTITIES_FOLDER: ${{ secrets.GCP_ENTITIES_FOLDER }}
-      GCP_ANALYSIS_FOLDER: ${{ secrets.GCP_ANALYSIS_FOLDER }}
+      AWS_STORAGE_BUCKET: ${{ secrets.AWS_STORAGE_BUCKET }}
+      AWS_TRANSLATE_FOLDER: ${{ secrets.AWS_TRANSLATE_FOLDER }}
+      AWS_COMPLEHEND_FOLDER: ${{ secrets.AWS_COMPLEHEND_FOLDER }}
+      AWS_ENTITIES_FOLDER: ${{ secrets.AWS_ENTITIES_FOLDER }}
+      AWS_ANALYSIS_FOLDER: ${{ secrets.AWS_ANALYSIS_FOLDER }}
+      AWS_LAMBDA_LIST: ${{ secrets.AWS_LAMBDA_LIST }}
+      AWS_LAMBDA_DETAIL: ${{ secrets.AWS_LAMBDA_DETAIL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
 
     steps:

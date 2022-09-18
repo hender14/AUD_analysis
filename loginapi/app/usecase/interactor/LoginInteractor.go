@@ -40,7 +40,7 @@ func (interactor *UserInteractor) Login(c *gin.Context, input *domain.LoginUser)
 	c.SetSameSite(http.SameSiteNoneMode) // samesiteをnonemodeにする
 	// 第7引数:http requestのみcookieを利用できるようにするか指定する。trueの場合JavaScriptからcookieを利用できない。
 	// trueにすることで、XSS攻撃を緩和することが可能。
-	c.SetCookie("jwt", token, 3600 /*[s]*/, "/app", os.Getenv("CORS_ADDRESS"), true, false)
+	c.SetCookie("jwt", token, 3600 /*[s]*/, "/", os.Getenv("CORS_ADDRESS"), true, false)
 
 	interactor.OutputPort.Render(gin.H{"jwt": token}, err)
 	return
@@ -49,7 +49,7 @@ func (interactor *UserInteractor) Login(c *gin.Context, input *domain.LoginUser)
 // logout
 func (interactor *UserInteractor) Logout(c *gin.Context) {
 	c.SetSameSite(http.SameSiteNoneMode) // samesiteをnonemodeにする
-	c.SetCookie("jwt", "", 3600 /*[s]*/, "/app", os.Getenv("CORS_ADDRESS"), true, false)
+	c.SetCookie("jwt", "", 3600 /*[s]*/, "/", os.Getenv("CORS_ADDRESS"), true, false)
 	cookie, err := c.Cookie("jwt") // info when login
 	// if cookie != "" {
 	// 	fmt.Printf("cookie data has not deleted: %s\n", cookie)

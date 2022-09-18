@@ -87,14 +87,13 @@ func TestSign(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	input := Tloginuser{os.Getenv("TESTUSER_EMAIL"), os.Getenv("TESTUSER_PASSWORD")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/login", body)
+	req, _ := http.NewRequest("POST", "/login", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -105,10 +104,9 @@ func TestLogin(t *testing.T) {
 }
 
 func TestUser(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/user", nil)
+	req, _ := http.NewRequest("GET", "/user", nil)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -124,10 +122,9 @@ func TestUser(t *testing.T) {
 }
 
 func TestLogout(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/logout", nil)
+	req, _ := http.NewRequest("GET", "/logout", nil)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -143,14 +140,13 @@ func TestLogout(t *testing.T) {
 }
 
 func TestForgot(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	input := TForgotuser{os.Getenv("TESTUSER_EMAIL")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/forgot", body)
+	req, _ := http.NewRequest("POST", "/forgot", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -161,14 +157,13 @@ func TestForgot(t *testing.T) {
 }
 
 func TestReset(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	input := TResetuser{token.Token, os.Getenv("TESTUSER_PASSWORD"), os.Getenv("TESTUSER_PASSWORD_CONFIRM")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/reset", body)
+	req, _ := http.NewRequest("POST", "/reset", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
@@ -177,14 +172,13 @@ func TestReset(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	input := Tdeleteuser{user.ID}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/app/delete", body)
+	req, _ := http.NewRequest("GET", "/delete", body)
 	// Cookie
 	req.AddCookie(&http.Cookie{
 		Name: "jwt", Value: jwttoken.Jwttoken, Path: "/app", Domain: os.Getenv("CORS_ADDRESS"),
@@ -200,14 +194,13 @@ func TestDelete(t *testing.T) {
 }
 
 func TestContact(t *testing.T) {
-	// router := setupRouter()
 	router := testSetting()
 	input := Cntmail{os.Getenv("TESTMAIL_ID"), os.Getenv("TESTMAIL_TITLE"), os.Getenv("TESTMAIL_CONTENT"), os.Getenv("TESTMAIL_EMAIL")}
 	input_json, _ := json.Marshal(input)
 	body := strings.NewReader(string(input_json))
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/app/contact", body)
+	req, _ := http.NewRequest("POST", "/contact", body)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)

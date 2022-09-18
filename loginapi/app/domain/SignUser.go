@@ -17,10 +17,10 @@ type InUser struct {
 }
 
 type SignUser struct {
-	ID        string    `json:"id"`
+	ID        string    `dynamo:"id"`
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
-	Email     string    `json:"email"`
+	Email     string    `dynamo:"email"`
 	Password  []byte    `json:"-"` // -を指定すると非表示にできる
 	Year      time.Time `json:"year"`
 }

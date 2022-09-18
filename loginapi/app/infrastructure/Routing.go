@@ -10,15 +10,15 @@ import (
 )
 
 type Routing struct {
-	Fsc  *Fscontext
+	Awsc *Awscontext
 	Conf *Sgconfig
 	Gin  *gin.Engine
 	Port string
 }
 
-func NewRouting(f *Fscontext) *Routing {
+func NewRouting(a *Awscontext) *Routing {
 	r := &Routing{
-		Fsc:  f,
+		Awsc: a,
 		Conf: rstNewRequest(),
 		Gin:  gin.Default(),
 		Port: setPort(),
@@ -39,24 +39,24 @@ func (r *Routing) setRouting() {
 		OutputFactory: presenter.NewUserOutputPort,
 		InputFactory:  interactor.NewUserInputPort,
 		RepoFactory:   gateway.NewUserRepository,
-		Conn:          r.Fsc,
+		Conn:          r.Awsc,
 		Config:        r.Conf,
 	}
 	// user registration
 	r.Gin.POST("/register", func(c *gin.Context) { usersController.Sign(c) })
 	// login
-	r.Gin.POST("/app/login", func(c *gin.Context) { usersController.Login(c) })
+	r.Gin.POST("/login", func(c *gin.Context) { usersController.Login(c) })
 	// logout
-	r.Gin.GET("/app/logout", func(c *gin.Context) { usersController.Logout(c) })
+	r.Gin.GET("/logout", func(c *gin.Context) { usersController.Logout(c) })
 	// get user info
-	r.Gin.GET("/app/user", func(c *gin.Context) { usersController.User(c) })
+	r.Gin.GET("/user", func(c *gin.Context) { usersController.User(c) })
 	// reset user info
-	r.Gin.POST("/app/forgot", func(c *gin.Context) { usersController.Forgot(c) })
-	r.Gin.POST("/app/reset", func(c *gin.Context) { usersController.Reset(c) })
+	r.Gin.POST("/forgot", func(c *gin.Context) { usersController.Forgot(c) })
+	r.Gin.POST("/reset", func(c *gin.Context) { usersController.Reset(c) })
 	// delete user info
-	r.Gin.GET("/app/delete", func(c *gin.Context) { usersController.Delete(c) })
+	r.Gin.GET("/delete", func(c *gin.Context) { usersController.Delete(c) })
 	// contact from user
-	r.Gin.POST("/app/contact", func(c *gin.Context) { usersController.Contact(c) })
+	r.Gin.POST("/contact", func(c *gin.Context) { usersController.Contact(c) })
 }
 
 func (r *Routing) Run() {

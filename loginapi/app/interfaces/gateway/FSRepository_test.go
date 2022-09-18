@@ -28,8 +28,8 @@ func TestQueryEmail(t *testing.T) {
 	// EXPECT()では呼び出されたかどうか
 	// Request()ではそのメソッド名が指定した引数で呼び出されたかどうか
 	// Return()では返り値を指定します
-	mockApiClinet.EXPECT().Fsquery(gomock.Any()).Return(nil, nil).Times(1)
-	mockApiClinet_f.EXPECT().Fsquery(gomock.Any()).Return(output, nil).Times(1)
+	mockApiClinet.EXPECT().Awsquery(gomock.Any()).Return(nil, nil).Times(1)
+	mockApiClinet_f.EXPECT().Awsquery(gomock.Any()).Return(output, nil).Times(1)
 	// mockApiClinet.EXPECT().RegisterAccoount(gomock.Any()).Do(func(s *domain.SignUser) {
 	// 	// Do を使ってモック関数への引数を得ることができる。
 	// 	// Do に渡す引数は`actUser`を持つクロージャ関数となる。

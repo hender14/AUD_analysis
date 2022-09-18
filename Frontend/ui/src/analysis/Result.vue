@@ -64,7 +64,7 @@ export default {
     onMounted(async () => {
       try {
         const { data } = await axios.get( userURL + 'user')
-        user = data.id
+        user = data.ID
         // actionsに設定したパラメータ名を設定
         await store.dispatch('setAuth', true)
       } catch(e) {
@@ -78,9 +78,9 @@ export default {
         }}).then(res => {
           names.value = res['data']['name']
           let buffer = res['data']['generation']
-          for(var i=0; i <= 16; i++){
-            buffer[i] = new Date(buffer[i])
-          }
+          // for(var i=0; i <= 16; i++){
+          //   buffer[i] = new Date(buffer[i])
+          // }
           generation.value = buffer
         })
       } catch(e) {

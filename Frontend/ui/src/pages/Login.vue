@@ -5,7 +5,6 @@
         {{ notify.message }}
       </div>
       <h1 class="h3 mb-3 fw-normal">Login</h1>
-      <!-- <p>{{ message }}</p> -->
       <input
         v-model="email"
         type="email"
