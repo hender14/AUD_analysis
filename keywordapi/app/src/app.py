@@ -13,7 +13,7 @@ from service.storage import S3
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-# CORS(app)
+CORS(app)
 load_dotenv()
 
 #CORS設定用
@@ -30,6 +30,7 @@ def after_request(response):
 def analysis():
   if request.method == "POST":
     file = request.files["file"]
+    print(type(file))
     username = request.form["username"]
     filename = request.form["filename"]
     if not (file and username and filename):

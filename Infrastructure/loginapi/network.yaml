@@ -1,0 +1,457 @@
+Resources:
+  VpcLogin:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 172.16.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: VPC/Loginapi
+  PublicSubnet1Login:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 172.16.0.0/18
+      VpcId: !Ref VpcLogin
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet1
+  PublicRouteTable1Login:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcLogin
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet1
+  PublicAssociation1Login:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable1Login
+      SubnetId: !Ref PublicSubnet1Login
+  PublicRoute1Login:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable1Login
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref PrivateGateway2Login
+    DependsOn:
+      - PrivateVPCGatewayAttachmentLogin
+  PublicSubnet1EIPLogin:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet1
+  PublicGateway1Login:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - PublicSubnet1EIPLogin
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1Login
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet1
+  PublicSubnet2Login:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 172.16.64.0/18
+      VpcId: !Ref VpcLogin
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet2
+  PublicRouteTable2Login:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcLogin
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet2
+  PublicAssociation2Login:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2Login
+      SubnetId: !Ref PublicSubnet2Login
+  PublicRoute2Login:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2Login
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref PrivateGateway2Login
+    DependsOn:
+      - PrivateVPCGatewayAttachmentLogin
+  PublicSubnet2EIPLogin:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet2
+  PublicGateway2Login:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - PublicSubnet2EIPLogin
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2Login
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PublicSubnet2
+  PrivateSubnet1Login:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 172.16.128.0/18
+      VpcId: !Ref VpcLogin
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Private
+        - Key: 'aws-cdk:subnet-type'
+          Value: Private
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PrivateSubnet1
+  PrivateRouteTable1Login:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcLogin
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PrivateSubnet1
+  PrivateAssociation1Login:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1Login
+      SubnetId: !Ref PrivateSubnet1Login
+  PrivateRoute1Login:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1Login
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicGateway1Login
+  PrivateSubnet2Login:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 172.16.192.0/18
+      VpcId: !Ref VpcLogin
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs ''
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Private
+        - Key: 'aws-cdk:subnet-type'
+          Value: Private
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PrivateSubnet2
+  PrivateRouteTable2Login:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcLogin
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Loginapi/PrivateSubnet2
+  PrivateAssociation2Login:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2Login
+      SubnetId: !Ref PrivateSubnet2Login
+  PrivateRoute2Login:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2Login
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicGateway2Login
+  PrivateGateway2Login:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: VPC/Loginapi
+  PrivateVPCGatewayAttachmentLogin:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VpcLogin
+      InternetGatewayId: !Ref PrivateGateway2Login
+  ECSClusterLogin:
+    Type: 'AWS::ECS::Cluster'
+  LoadBalancerLogin:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      LoadBalancerAttributes:
+        - Key: deletion_protection.enabled
+          Value: 'false'
+      Scheme: internal
+      SecurityGroups:
+        - !GetAtt 
+          - SecurityGroupLogin
+          - GroupId
+      Subnets:
+        - !Ref PrivateSubnet1Login
+        - !Ref PrivateSubnet2Login
+      Type: application
+  SecurityGroupLogin:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: >-
+        Automatically created Security Group for ELB
+        PrivateIntegrationsStackPrivateIntegrationsTutorialServiceLBCB8E0368
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow from anyone on port 8080
+          FromPort: 8080
+          IpProtocol: tcp
+          ToPort: 8080
+      VpcId: !Ref VpcLogin
+  SecurityGroupEgressLogin:
+    Type: 'AWS::EC2::SecurityGroupEgress'
+    Properties:
+      GroupId: !GetAtt 
+        - SecurityGroupLogin
+        - GroupId
+      IpProtocol: tcp
+      Description: Load balancer to target
+      DestinationSecurityGroupId: !GetAtt 
+        - ECSSecurityGruopLogin
+        - GroupId
+      FromPort: 8080
+      ToPort: 8080
+  LBListenerLogin:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref LBTargetLogin
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerLogin
+      Port: 8080
+      Protocol: HTTP
+  LBTargetLogin:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Port: 8080
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcLogin
+  IamTaskDefLogin:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+  ECSTaskDefLogin:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image: 718377564585.dkr.ecr.ap-northeast-1.amazonaws.com/loginapi:7df89dc4240d88073008cbef557c29de214b2a00
+          environmentFiles:
+            - value: arn:aws:s3:::aud-analysis-keybucket/loginapi/.env
+              type: s3
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogsLogin
+              awslogs-stream-prefix: PrivateIntegrationsTutorialService
+              awslogs-region: !Ref 'AWS::Region'
+          Name: web
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+      Cpu: '512'
+      ExecutionRoleArn: !GetAtt 
+        - IamECSLogin
+        - Arn
+      Family: >-
+        PrivateIntegrationsStackPrivateIntegrationsTutorialServiceTaskDefB5E162FC
+      Memory: '2048'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn: !GetAtt 
+        - IamTaskDefLogin
+        - Arn
+  LogsLogin:
+    Type: 'AWS::Logs::LogGroup'
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  IamECSLogin:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+  PolicyTaskDefLogin:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          # - Action: '*'
+          - Action:
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+              - 's3:Get*'
+              - 'ecr:GetDownloadUrlForLayer'
+              - 'ecr:BatchGetImage'
+              - 'ecr:BatchCheckLayerAvailability'
+            Effect: Allow
+            Resource: '*'
+            # Resource: !GetAtt 
+            #   - LogsLogin
+            #   - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        PolicyTaskDefLogin
+      Roles:
+        - !Ref IamECSLogin
+  ECSServiceLogin:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      Cluster: !Ref ECSClusterLogin
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 2
+      EnableECSManagedTags: false
+      HealthCheckGracePeriodSeconds: 6000
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: web
+          ContainerPort: 8080
+          TargetGroupArn: !Ref LBTargetLogin
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !GetAtt 
+              - ECSSecurityGruopLogin
+              - GroupId
+          Subnets:
+            - !Ref PrivateSubnet1Login
+            - !Ref PrivateSubnet2Login
+      TaskDefinition: !Ref ECSTaskDefLogin
+    DependsOn:
+      - LBTargetLogin
+      - LBListenerLogin
+  ECSSecurityGruopLogin:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: >-
+        Loginapi/Service/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: '-1'
+      VpcId: !Ref VpcLogin
+  SecurityGroupIngressLogin:
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    Properties:
+      IpProtocol: tcp
+      Description: Load balancer to target
+      FromPort: 8080
+      GroupId: !GetAtt 
+        - ECSSecurityGruopLogin
+        - GroupId
+      SourceSecurityGroupId: !GetAtt 
+        - SecurityGroupLogin
+        - GroupId
+      ToPort: 8080
+  ApiGatewayLogin:
+    Type: 'AWS::ApiGatewayV2::Api'
+    Properties:
+      Name: loginapi
+      ProtocolType: HTTP
+  ApiIntegrationLogin:
+    Type: 'AWS::ApiGatewayV2::Integration'
+    Properties:
+      ApiId: !Ref ApiGatewayLogin
+      IntegrationType: HTTP_PROXY
+      ConnectionId: !Ref ApiVpcLinkLogin
+      ConnectionType: VPC_LINK
+      IntegrationMethod: ANY
+      IntegrationUri: !Ref LBListenerLogin
+      PayloadFormatVersion: '1.0'
+  ApiRouteLogin:
+    Type: 'AWS::ApiGatewayV2::Route'
+    Properties:
+      ApiId: !Ref ApiGatewayLogin
+      RouteKey: 'ANY /{proxy+}'
+      Target: !Join 
+        - ''
+        - - integrations/
+          - !Ref >-
+            ApiIntegrationLogin
+  ApiVpcLinkLogin:
+    Type: 'AWS::ApiGatewayV2::VpcLink'
+    Properties:
+      Name: loginapi
+      SubnetIds:
+        - !Ref PrivateSubnet1Login
+        - !Ref PrivateSubnet2Login
+      SecurityGroupIds: []
+  LogGroupLogin:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      RetentionInDays: 731
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  StageWithLogging:
+    Type: 'AWS::ApiGatewayV2::Stage'
+    Properties:
+      ApiId: !Ref ApiGatewayLogin
+      StageName: $default
+      AccessLogSettings:
+        DestinationArn: !GetAtt 
+          - LogGroupLogin
+          - Arn
+        Format: >-
+          $context.identity.sourceIp - - [$context.requestTime]
+          "$context.httpMethod $context.routeKey $context.protocol"
+          $context.status $context.responseLength $context.requestId
+      AutoDeploy: true
+Outputs:
+  APIinvokeURL:
+    Description: Your API's invoke URL
+    Value: !GetAtt 
+      - ApiGatewayLogin
+      - ApiEndpoint
