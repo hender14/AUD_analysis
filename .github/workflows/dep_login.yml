@@ -1,0 +1,66 @@
+name: CI to AWS on loginapi
+
+on:
+  push:
+    paths:
+    - 'loginapi/**'
+    branches: [ 'devlop' ]
+    # branches: [ 'feature/**' ]
+env:
+  TEST_NAME: loginapi
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      AWS_ACCESS_ID: ${{ secrets.AWS_ACCESS_ID }}
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY_LOGIN }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SENDGRID_RST_TEMPLATED_ID: ${{ secrets.SENDGRID_RST_TEMPLATED_ID }}
+      SENDGRID_CNT_TEMPLATED_ID: ${{ secrets.SENDGRID_CNT_TEMPLATED_ID }}
+      SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+      CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: CI/CD
+        run: |
+          docker-compose -f docker-compose.yml build --no-cache
+          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yml ps
+          docker container exec ${{ env.TEST_NAME }} go test -v ./...
+          docker-compose -f docker-compose.yml down
+        working-directory: ./loginapi
+        env:
+          TESTUSER_FIRSTNAME: ${{ secrets.TESTUSER_FIRSTNAME }}
+          TESTUSER_LASTNAME: ${{ secrets.TESTUSER_LASTNAME }}
+          TESTUSER_EMAIL: ${{ secrets.TESTUSER_EMAIL }}
+          TESTUSER_PASSWORD: ${{ secrets.TESTUSER_PASSWORD }}
+          TESTUSER_PASSWORD_CONFIRM: ${{ secrets.TESTUSER_PASSWORD_CONFIRM }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_ID }}
+          aws-secret-access-key: ${{ env.AWS_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Make fail if the previous workflow was failed
+        if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+            docker build -t ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }} .
+            docker push ${{ env.ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:${{ github.sha }}
+        working-directory: ./loginapi/app

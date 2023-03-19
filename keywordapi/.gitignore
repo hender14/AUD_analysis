@@ -1,5 +1,5 @@
 service.yaml
-/src/credentials/
+**/key.json
 **/.env
 **/__pycache__
 **/.pytest_cache
@@ -7,3 +7,4 @@ service.yaml
 /terraform/*
 !/terraform/main.tf
 !/terraform/variable.tf
+.vscode/

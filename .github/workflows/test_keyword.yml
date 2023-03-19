@@ -1,0 +1,52 @@
+name: Test to AWS on keywordapi
+
+on:
+  push:
+    paths:
+    - 'keywordapi/**'
+    # branches: [ 'devlop' ]
+    branches: [ 'feature/**' ]
+env:
+  TEST_NAME: apptest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      AWS_STORAGE_BUCKET: ${{ secrets.AWS_STORAGE_BUCKET }}
+      AWS_TRANSLATE_FOLDER: ${{ secrets.AWS_TRANSLATE_FOLDER }}
+      AWS_COMPLEHEND_FOLDER: ${{ secrets.AWS_COMPLEHEND_FOLDER }}
+      AWS_ENTITIES_FOLDER: ${{ secrets.AWS_ENTITIES_FOLDER }}
+      AWS_ANALYSIS_FOLDER: ${{ secrets.AWS_ANALYSIS_FOLDER }}
+      AWS_LAMBDA_LIST: ${{ secrets.AWS_LAMBDA_LIST }}
+      AWS_LAMBDA_DETAIL: ${{ secrets.AWS_LAMBDA_DETAIL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      CORS_ADDRESS: ${{ secrets.CORS_ADDRESS }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: BUILD/DEPLOY
+        run: |
+          docker-compose -f docker-compose_build.yml build --no-cache
+          docker-compose -f docker-compose_build.yml up -d
+          docker-compose -f docker-compose_build.yml ps
+          docker-compose -f docker-compose_build.yml down
+        working-directory: ./keywordapi
+
+      - name: TEST
+        run: |
+          docker-compose -f docker-compose_test.yml build --no-cache
+          docker-compose -f docker-compose_test.yml run ${{ env.TEST_NAME }} pytest -v test_app.py
+          docker-compose -f docker-compose_test.yml down
+        working-directory: ./keywordapi
+        env:
+          TESTUSER_ID: ${{ secrets.TESTUSER_ID }}
+          TESTUSER_TRANSLATE_FILENAME: ${{ secrets.TESTUSER_TRANSLATE_FILENAME }}
+          TESTUSER_ANALYSIS_FILENAME: ${{ secrets.TESTUSER_ANALYSIS_FILENAME }}

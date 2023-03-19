@@ -1,0 +1,456 @@
+Resources:
+  VpcKeyword:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: VPC/Keywordapi
+  PublicSubnet1Keyword:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId: !Ref VpcKeyword
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet1
+  PublicRouteTable1Keyword:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcKeyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet1
+  PublicAssociation1Keyword:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable1Keyword
+      SubnetId: !Ref PublicSubnet1Keyword
+  PublicRoute1Keyword:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable1Keyword
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref PrivateGateway2Keyword
+    DependsOn:
+      - PrivateVPCGatewayAttachmentKeyword
+  PublicSubnet1EIPKeyword:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet1
+  PublicGateway1Keyword:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - PublicSubnet1EIPKeyword
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1Keyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet1
+  PublicSubnet2Keyword:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId: !Ref VpcKeyword
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs ''
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Public
+        - Key: 'aws-cdk:subnet-type'
+          Value: Public
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet2
+  PublicRouteTable2Keyword:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcKeyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet2
+  PublicAssociation2Keyword:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2Keyword
+      SubnetId: !Ref PublicSubnet2Keyword
+  PublicRoute2Keyword:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2Keyword
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref PrivateGateway2Keyword
+    DependsOn:
+      - PrivateVPCGatewayAttachmentKeyword
+  PublicSubnet2EIPKeyword:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet2
+  PublicGateway2Keyword:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt 
+        - PublicSubnet2EIPKeyword
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2Keyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PublicSubnet2
+  PrivateSubnet1Keyword:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId: !Ref VpcKeyword
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Private
+        - Key: 'aws-cdk:subnet-type'
+          Value: Private
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PrivateSubnet1
+  PrivateRouteTable1Keyword:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcKeyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PrivateSubnet1
+  PrivateAssociation1Keyword:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1Keyword
+      SubnetId: !Ref PrivateSubnet1Keyword
+  PrivateRoute1Keyword:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1Keyword
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicGateway1Keyword
+  PrivateSubnet2Keyword:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId: !Ref VpcKeyword
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs ''
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: 'aws-cdk:subnet-name'
+          Value: Private
+        - Key: 'aws-cdk:subnet-type'
+          Value: Private
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PrivateSubnet2
+  PrivateRouteTable2Keyword:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VpcKeyword
+      Tags:
+        - Key: Name
+          Value: >-
+            VPC/Keywordapi/PrivateSubnet2
+  PrivateAssociation2Keyword:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2Keyword
+      SubnetId: !Ref PrivateSubnet2Keyword
+  PrivateRoute2Keyword:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2Keyword
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicGateway2Keyword
+  PrivateGateway2Keyword:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: VPC/Keywordapi
+  PrivateVPCGatewayAttachmentKeyword:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VpcKeyword
+      InternetGatewayId: !Ref PrivateGateway2Keyword
+  ECSClusterKeyword:
+    Type: 'AWS::ECS::Cluster'
+  LoadBalancerKeyword:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      LoadBalancerAttributes:
+        - Key: deletion_protection.enabled
+          Value: 'false'
+      Scheme: internal
+      SecurityGroups:
+        - !GetAtt 
+          - SecurityGroupKeyword
+          - GroupId
+      Subnets:
+        - !Ref PrivateSubnet1Keyword
+        - !Ref PrivateSubnet2Keyword
+      Type: application
+  SecurityGroupKeyword:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: >-
+        Automatically created Security Group for ELB
+        PrivateIntegrationsStackPrivateIntegrationsTutorialServiceLBCB8E0368
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow from anyone on port 8080
+          FromPort: 8080
+          IpProtocol: tcp
+          ToPort: 8080
+      VpcId: !Ref VpcKeyword
+  SecurityGroupEgressKeyword:
+    Type: 'AWS::EC2::SecurityGroupEgress'
+    Properties:
+      GroupId: !GetAtt 
+        - SecurityGroupKeyword
+        - GroupId
+      IpProtocol: tcp
+      Description: Load balancer to target
+      DestinationSecurityGroupId: !GetAtt 
+        - ECSSecurityGruopKeyword
+        - GroupId
+      FromPort: 8080
+      ToPort: 8080
+  LBListenerKeyword:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref LBTargetKeyword
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancerKeyword
+      Port: 8080
+      Protocol: HTTP
+  LBTargetKeyword:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Port: 8080
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcKeyword
+  IamTaskDefKeyword:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+  ECSTaskDefKeyword:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image: 718377564585.dkr.ecr.ap-northeast-1.amazonaws.com/keywordapi:106f215d8df02a9e25b290c19f5c8f6fbbde757c
+          environmentFiles:
+            - value: arn:aws:s3:::aud-analysis-keybucket/keywordapi/.env
+              type: s3
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogsKeyword
+              awslogs-stream-prefix: PrivateIntegrationsTutorialService
+              awslogs-region: !Ref 'AWS::Region'
+          Name: web
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+      Cpu: '512'
+      ExecutionRoleArn: !GetAtt 
+        - IamECSKeyword
+        - Arn
+      Family: >-
+        PrivateIntegrationsStackPrivateIntegrationsTutorialServiceTaskDefB5E162FC
+      Memory: '2048'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn: !GetAtt 
+        - IamTaskDefKeyword
+        - Arn
+  LogsKeyword:
+    Type: 'AWS::Logs::LogGroup'
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  IamECSKeyword:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+  PolicyTaskDefKeyword:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          # - Action: '*'
+          - Action:
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+              - 's3:Get*'
+              - 'ecr:GetDownloadUrlForLayer'
+              - 'ecr:BatchGetImage'
+              - 'ecr:BatchCheckLayerAvailability'
+            Resource: '*'
+            # Resource: !GetAtt 
+            #   - LogsKeyword
+            #   - Arn
+        Version: 2012-10-17
+      PolicyName: >-
+        PolicyTaskDefKeyword
+      Roles:
+        - !Ref IamECSKeyword
+  ECSServiceKeyword:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      Cluster: !Ref ECSClusterKeyword
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 2
+      EnableECSManagedTags: false
+      HealthCheckGracePeriodSeconds: 6000
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: web
+          ContainerPort: 8080
+          TargetGroupArn: !Ref LBTargetKeyword
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !GetAtt 
+              - ECSSecurityGruopKeyword
+              - GroupId
+          Subnets:
+            - !Ref PrivateSubnet1Keyword
+            - !Ref PrivateSubnet2Keyword
+      TaskDefinition: !Ref ECSTaskDefKeyword
+    DependsOn:
+      - LBTargetKeyword
+      - LBListenerKeyword
+  ECSSecurityGruopKeyword:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: >-
+        Keywordapi/Service/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: '-1'
+      VpcId: !Ref VpcKeyword
+  SecurityGroupIngressKeyword:
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    Properties:
+      IpProtocol: tcp
+      Description: Load balancer to target
+      FromPort: 8080
+      GroupId: !GetAtt 
+        - ECSSecurityGruopKeyword
+        - GroupId
+      SourceSecurityGroupId: !GetAtt 
+        - SecurityGroupKeyword
+        - GroupId
+      ToPort: 8080
+  ApiGatewayKeyword:
+    Type: 'AWS::ApiGatewayV2::Api'
+    Properties:
+      Name: keywordapi
+      ProtocolType: HTTP
+  ApiIntegrationKeyword:
+    Type: 'AWS::ApiGatewayV2::Integration'
+    Properties:
+      ApiId: !Ref ApiGatewayKeyword
+      IntegrationType: HTTP_PROXY
+      ConnectionId: !Ref ApiVpcLinkKeyword
+      ConnectionType: VPC_LINK
+      IntegrationMethod: ANY
+      IntegrationUri: !Ref LBListenerKeyword
+      PayloadFormatVersion: '1.0'
+  ApiRouteKeyword:
+    Type: 'AWS::ApiGatewayV2::Route'
+    Properties:
+      ApiId: !Ref ApiGatewayKeyword
+      RouteKey: 'ANY /{proxy+}'
+      Target: !Join 
+        - ''
+        - - integrations/
+          - !Ref >-
+            ApiIntegrationKeyword
+  ApiVpcLinkKeyword:
+    Type: 'AWS::ApiGatewayV2::VpcLink'
+    Properties:
+      Name: keywordapi
+      SubnetIds:
+        - !Ref PrivateSubnet1Keyword
+        - !Ref PrivateSubnet2Keyword
+      SecurityGroupIds: []
+  LogGroupKeyword:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      RetentionInDays: 731
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  StageWithLogging:
+    Type: 'AWS::ApiGatewayV2::Stage'
+    Properties:
+      ApiId: !Ref ApiGatewayKeyword
+      StageName: $default
+      AccessLogSettings:
+        DestinationArn: !GetAtt 
+          - LogGroupKeyword
+          - Arn
+        Format: >-
+          $context.identity.sourceIp - - [$context.requestTime]
+          "$context.httpMethod $context.routeKey $context.protocol"
+          $context.status $context.responseLength $context.requestId
+      AutoDeploy: true
+Outputs:
+  APIinvokeURL:
+    Description: Your API's invoke URL
+    Value: !GetAtt 
+      - ApiGatewayKeyword
+      - ApiEndpoint

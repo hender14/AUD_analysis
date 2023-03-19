@@ -1,66 +1,35 @@
-import os
-from google.cloud import language_v1
+import json
 import numpy as np
-import service.gcstorage as gcstorage
+import boto3
 
-def sample_analyze_entities(filename):
-  foldername = os.environ['GCP_COMPLEHEND_FOLDER']
-  client = language_v1.LanguageServiceClient()
+class Comprehend:
+  def __init__(self):
+    self.client = boto3.client('comprehend')
 
-  # Available types: PLAIN_TEXT, HTML
-  type_ = language_v1.Document.Type.PLAIN_TEXT
+  def detect_key_phrases(self, response):
+    # response = self.client_s3.get_object(Bucket=self.bucketname, Key=self.filepath)
+    body = json.load(response['Body'])
+    transcript = body['results']['transcripts'][0]['transcript']
 
-  language = "ja"
-  filepath = "gs://" + os.environ['GCP_STORAGE_BUCKET'] + "/" + foldername + "/" + filename + ".txt"
-  document = {"gcs_content_uri": filepath, "type_": type_, "language": language}
+    response = self.client.detect_key_phrases(
+        Text=transcript, LanguageCode='ja')
+    phrases = response['KeyPhrases']
+    return phrases
 
-  # Available values: NONE, UTF8, UTF16, UTF32
-  encoding_type = language_v1.EncodingType.UTF8
+  def key_phrases_list(self, phrases):
+    score = []
+    item = []
+    keyword = []
 
-  response = client.analyze_entities(request = {'document': document, 'encoding_type': encoding_type})
+    for entity in phrases:
+      item.append(entity['Text'])
+      score.append(entity['Score'])
 
-  cjson = []
-  score = []
-  item = []
-  index_list = []
-  keyword = []
-  confirm = []
+    length = len(score) - 1
+    sort_list = np.array(score)
+    index_list = np.argsort(sort_list)
 
-  # Loop through entitites returned from the API
-  for entity in response.entities:
-    print(u"Representative name for the entity: {}".format(entity.name))
-    # Get entity type, e.g. PERSON, LOCATION, ADDRESS, NUMBER, et al
-    print(u"Entity type: {}".format(language_v1.Entity.Type(entity.type_).name))
-    # Get the salience score associated with the entity in the [0, 1.0] range
-    print(u"Salience score: {}".format(entity.salience))
-    cjson = {"name": entity.name, "type": language_v1.Entity.Type(entity.type_).name, "score": entity.salience}
-    item.append(entity.name)
-    score.append(entity.salience)
-    confirm.append(cjson)
-
-    for metadata_name, metadata_value in entity.metadata.items():
-        print(u"{}: {}".format(metadata_name, metadata_value))
-
-    for mention in entity.mentions:
-      print(u"Mention text: {}".format(mention.text.content))
-      # Get the mention type, e.g. PROPER for proper noun
-      print(
-          u"Mention type: {}".format(language_v1.EntityMention.Type(mention.type_).name)
-      )
-      # print("print: " + str(entity.salience))
-  length = len(score) - 1
-  sort_list = np.array(score)
-  index_list = np.argsort(sort_list)
-
-  print(item)
-
-  # np.argsort(A)[::-1]
-  for index in range(length-2, length-1):
-    keyword.append(item[index_list[index]])
+    for index in range(length-2, length):
+      keyword.append(item[index_list[index]])
     print(keyword)
-
-  print(u"Language of the text: {}".format(response.language))
-  foldername = os.environ['GCP_ENTITIES_FOLDER']
-  gcstorage.upload_blob_json(filename, cjson, os.environ['GCP_STORAGE_BUCKET'], foldername)
-
-  return keyword
+    return keyword

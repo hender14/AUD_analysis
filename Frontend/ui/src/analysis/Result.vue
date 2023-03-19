@@ -78,9 +78,9 @@ export default {
         }}).then(res => {
           names.value = res['data']['name']
           let buffer = res['data']['generation']
-          for(var i=0; i <= 16; i++){
-            buffer[i] = new Date(buffer[i])
-          }
+          // for(var i=0; i <= 16; i++){
+          //   buffer[i] = new Date(buffer[i])
+          // }
           generation.value = buffer
         })
       } catch(e) {

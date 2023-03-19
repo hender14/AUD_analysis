@@ -8,8 +8,8 @@
   </header>
   <form @submit.prevent="upload">
     <div>
-      <label for="file">アップロードするファイルを選択してください</label>
-      <input type="file" id="file" name="file" required @change="validate_uploads">
+      <label class="pb-2 mb-3 d- flex align-items-center" for="file">アップロードするファイルを選択してください</label><br>
+      <input class="pb-2 mb-3 d- flex align-items-center" type="file" id="file" name="file" required @change="validate_uploads"><br>
       <input type='submit' name='upload_btn' value='upload'>
     </div>
   </form>
@@ -80,16 +80,18 @@ export default {
 
     const upload = async () => {
       try {
-        // let config = {
-        // headers: {
-        //   'content-type': 'multipart/form-data',
-        //   // 'Access-Control-Allow-Origin': 'http://localhost'
-        //   }
-        // };
-        const filename = await uploadfile(file, user, name)
-        axios.post( analysisURL + 'analysis', {
-          username: user,
-          filename: filename
+        // parameter の用意
+        const time = new Date().getTime().toString();
+        const filename = time+'-'+name
+        const params = new FormData();
+        params.append("file", file);
+        params.append("username", user);
+        params.append("filename", filename);
+        axios.post( analysisURL + 'analysis', params, {
+          headers: {
+            // multipartで送信
+            'content-type': 'multipart/form-data',
+          },
         }).then(res => {
           console.log(res)
         // alert("「" + res['name'] + "」登録完了");
